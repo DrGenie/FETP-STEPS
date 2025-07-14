@@ -1,4 +1,4 @@
-// script.js
+/* script.js */
 /****************************************************************************
  * SCRIPT.JS
  * Advanced FETP Decision Aid Tool
