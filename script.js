@@ -1,3 +1,4 @@
+// script.js
 /****************************************************************************
  * SCRIPT.JS
  * Advanced FETP Decision Aid Tool
@@ -6,6 +7,7 @@
  * - Chart rendering for Adoption Likelihood and dynamic cost–benefit analysis
  * - Scenario saving & PDF export
  * - FAQ overlay with detailed explanations
+ * - New: Optimization for maximum uptake
  ****************************************************************************/
 
 /* Global variables */
@@ -50,6 +52,18 @@ var mainCoefficients = {
   cost_high: -0.5
 };
 
+/* Options for each attribute */
+const attributeOptions = {
+  deliveryMethod: ['inperson', 'hybrid', 'online'],
+  trainingModel: ['parttime', 'fulltime'],
+  annualCapacity: ['100', '500', '1000', '2000'],
+  stipendSupport: ['75000', '100000', '150000'],
+  careerPathway: ['government', 'international', 'academic', 'private'],
+  geographicDistribution: ['centralized', 'regional', 'nationwide'],
+  accreditation: ['unaccredited', 'national', 'international'],
+  totalCost: ['low', 'medium', 'high']
+};
+
 /* Tab Switching */
 document.addEventListener("DOMContentLoaded", function() {
   var tabs = document.querySelectorAll(".tablink");
@@ -84,65 +98,30 @@ function openTab(tabId, clickedBtn) {
   clickedBtn.setAttribute("aria-selected", "true");
 }
 
-/* Build Scenario */
+/* Build Scenario from selects */
 function buildFETPScenario() {
-  var deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked') ? document.querySelector('input[name="deliveryMethod"]:checked').value : null;
-  var trainingModel = document.querySelector('input[name="trainingModel"]:checked') ? document.querySelector('input[name="trainingModel"]:checked').value : null;
-  var annualCapacity = document.querySelector('input[name="annualCapacity"]:checked') ? document.querySelector('input[name="annualCapacity"]:checked').value : null;
-  var stipendSupport = document.querySelector('input[name="stipendSupport"]:checked') ? document.querySelector('input[name="stipendSupport"]:checked').value : null;
-  var careerPathway = document.querySelector('input[name="careerPathway"]:checked') ? document.querySelector('input[name="careerPathway"]:checked').value : null;
-  var geographicDistribution = document.querySelector('input[name="geographicDistribution"]:checked') ? document.querySelector('input[name="geographicDistribution"]:checked').value : null;
-  var accreditation = document.querySelector('input[name="accreditation"]:checked') ? document.querySelector('input[name="accreditation"]:checked').value : null;
-  var totalCost = document.querySelector('input[name="totalCost"]:checked') ? document.querySelector('input[name="totalCost"]:checked').value : null;
-  if(!deliveryMethod || !trainingModel || !annualCapacity || !stipendSupport || !careerPathway || !geographicDistribution || !accreditation || !totalCost) return null;
-  return {
-    deliveryMethod: deliveryMethod,
-    trainingModel: trainingModel,
-    annualCapacity: annualCapacity,
-    stipendSupport: stipendSupport,
-    careerPathway: careerPathway,
-    geographicDistribution: geographicDistribution,
-    accreditation: accreditation,
-    totalCost: totalCost
-  };
+  var scenario = {};
+  var selects = document.querySelectorAll('select');
+  var allSelected = true;
+  selects.forEach(select => {
+    scenario[select.name] = select.value;
+    if (!select.value) allSelected = false;
+  });
+  if (!allSelected) return null;
+  return scenario;
 }
 
 /* Compute Uptake using logistic function */
 function computeFETPUptake(sc) {
   var U = mainCoefficients.base;
-  // Delivery Method
-  if (sc.deliveryMethod === "inperson") U += mainCoefficients.delivery_inperson;
-  else if (sc.deliveryMethod === "hybrid") U += mainCoefficients.delivery_hybrid;
-  else if (sc.deliveryMethod === "online") U += mainCoefficients.delivery_online;
-  // Training Model
-  if (sc.trainingModel === "parttime") U += mainCoefficients.trainingModel_parttime;
-  else if (sc.trainingModel === "fulltime") U += mainCoefficients.trainingModel_fulltime;
-  // Annual Capacity
-  if (sc.annualCapacity === "100") U += mainCoefficients.capacity_100;
-  else if (sc.annualCapacity === "500") U += mainCoefficients.capacity_500;
-  else if (sc.annualCapacity === "1000") U += mainCoefficients.capacity_1000;
-  else if (sc.annualCapacity === "2000") U += mainCoefficients.capacity_2000;
-  // Stipend Support
-  if (sc.stipendSupport === "75000") U += mainCoefficients.stipend_75000;
-  else if (sc.stipendSupport === "100000") U += mainCoefficients.stipend_100000;
-  else if (sc.stipendSupport === "150000") U += mainCoefficients.stipend_150000;
-  // Career Pathways
-  if (sc.careerPathway === "government") U += mainCoefficients.career_government;
-  else if (sc.careerPathway === "international") U += mainCoefficients.career_international;
-  else if (sc.careerPathway === "academic") U += mainCoefficients.career_academic;
-  else if (sc.careerPathway === "private") U += mainCoefficients.career_private;
-  // Geographic Distribution
-  if (sc.geographicDistribution === "centralized") U += mainCoefficients.geographic_centralized;
-  else if (sc.geographicDistribution === "regional") U += mainCoefficients.geographic_regional;
-  else if (sc.geographicDistribution === "nationwide") U += mainCoefficients.geographic_nationwide;
-  // Accreditation
-  if (sc.accreditation === "unaccredited") U += mainCoefficients.accreditation_unaccredited;
-  else if (sc.accreditation === "national") U += mainCoefficients.accreditation_national;
-  else if (sc.accreditation === "international") U += mainCoefficients.accreditation_international;
-  // Total Cost
-  if (sc.totalCost === "low") U += mainCoefficients.cost_low;
-  else if (sc.totalCost === "medium") U += mainCoefficients.cost_medium;
-  else if (sc.totalCost === "high") U += mainCoefficients.cost_high;
+  U += mainCoefficients[`delivery_${sc.deliveryMethod}`] || 0;
+  U += mainCoefficients[`trainingModel_${sc.trainingModel}`] || 0;
+  U += mainCoefficients[`capacity_${sc.annualCapacity}`] || 0;
+  U += mainCoefficients[`stipend_${sc.stipendSupport}`] || 0;
+  U += mainCoefficients[`career_${sc.careerPathway}`] || 0;
+  U += mainCoefficients[`geographic_${sc.geographicDistribution}`] || 0;
+  U += mainCoefficients[`accreditation_${sc.accreditation}`] || 0;
+  U += mainCoefficients[`cost_${sc.totalCost}`] || 0;
   
   var uptakeProbability = Math.exp(U) / (Math.exp(U) + 1);
   return uptakeProbability;
@@ -209,7 +188,7 @@ function renderFETPCostsBenefits() {
   var totalCost = costMapping[scenario.totalCost];
   
   var sel = document.getElementById("qalyFETPSelect");
-  var qVal = (sel && sel.value === "low") ? 0.01 : (sel && sel.value === "high") ? 0.08 : 0.05;
+  var qVal = (sel.value === "low") ? 0.01 : (sel.value === "high") ? 0.08 : 0.05;
   
   var monetizedBenefits = effectiveEnrollment * qVal * 50000;
   var netBenefit = monetizedBenefits - totalCost;
@@ -239,7 +218,7 @@ function renderCostBenefitChart() {
   var costMapping = { low: 27000, medium: 55000, high: 83000 };
   var totalCost = costMapping[scenario.totalCost];
   var sel = document.getElementById("qalyFETPSelect");
-  var qVal = (sel && sel.value === "low") ? 0.01 : (sel && sel.value === "high") ? 0.08 : 0.05;
+  var qVal = (sel.value === "low") ? 0.01 : (sel.value === "high") ? 0.08 : 0.05;
   var monetizedBenefits = effectiveEnrollment * qVal * 50000;
   var netBenefit = monetizedBenefits - totalCost;
   var ctx = document.getElementById("costBenefitChart").getContext("2d");
@@ -374,4 +353,39 @@ function toggleFETPBenefitsAnalysis() {
 function toggleFAQ() {
   var overlay = document.getElementById("faqOverlay");
   overlay.style.display = (overlay.style.display === "block") ? "none" : "block";
+}
+
+/* Optimize Configuration */
+function optimizeConfiguration() {
+  let maxUptake = 0;
+  let bestScenario = null;
+
+  const generateCombinations = (attributes, current = {}, index = 0) => {
+    if (index === attributes.length) {
+      const uptake = computeFETPUptake(current);
+      if (uptake > maxUptake) {
+        maxUptake = uptake;
+        bestScenario = { ...current };
+      }
+      return;
+    }
+
+    const attr = attributes[index];
+    attributeOptions[attr].forEach(option => {
+      current[attr] = option;
+      generateCombinations(attributes, current, index + 1);
+    });
+  };
+
+  const attributes = Object.keys(attributeOptions);
+  generateCombinations(attributes);
+
+  if (bestScenario) {
+    Object.keys(bestScenario).forEach(key => {
+      document.querySelector(`select[name="${key}"]`).value = bestScenario[key];
+    });
+    alert(`Optimized configuration set for maximum uptake: ${(maxUptake * 100).toFixed(2)}%`);
+  } else {
+    alert('Optimization failed.');
+  }
 }
