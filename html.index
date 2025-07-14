@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,9 +50,6 @@
     <button class="tablink" data-tab="scenariosTab" aria-selected="false">
       <i class="fa-solid fa-folder-open"></i><span> Saved Scenarios</span>
     </button>
-    <button class="tablink" data-tab="tutorialTab" aria-selected="false">
-      <i class="fa-solid fa-video"></i><span> Tutorial</span>
-    </button>
   </nav>
 
   <!-- Introduction Tab -->
@@ -82,6 +80,7 @@
         <li><strong>Adoption Likelihood:</strong> View a chart predicting stakeholder support based on your configuration.</li>
         <li><strong>Costs & Benefits:</strong> See a dynamic analysis of the selected total cost and estimated benefits.</li>
         <li><strong>Saved Scenarios:</strong> Save and export scenario details for side-by-side comparison.</li>
+        <li><strong>Optimize Configuration:</strong> Use the new optimize button in Inputs to find the best setup for maximum uptake.</li>
       </ol>
     </div>
   </section>
@@ -197,11 +196,11 @@
                 Training Delivery Method <span class="reference">(Ref: Hybrid)</span>
                 <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: In-Person (hands-on training), Hybrid (online modules with periodic sessions), Fully Online (digital learning via government platforms)."></i>
               </label>
-              <div class="input-options">
-                <label><input type="radio" name="deliveryMethod" value="inperson" /> In-Person</label>
-                <label><input type="radio" name="deliveryMethod" value="hybrid" checked /> Hybrid</label>
-                <label><input type="radio" name="deliveryMethod" value="online" /> Fully Online</label>
-              </div>
+              <select name="deliveryMethod">
+                <option value="inperson">In-Person</option>
+                <option value="hybrid" selected>Hybrid</option>
+                <option value="online">Fully Online</option>
+              </select>
             </div>
             <!-- Training Model -->
             <div class="input-block">
@@ -209,10 +208,10 @@
                 Training Model <span class="reference">(Ref: Part-Time)</span>
                 <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: Part-Time Model (continue working) or Full-Time Model (Scholarship) (full-time commitment with scholarship)."></i>
               </label>
-              <div class="input-options">
-                <label><input type="radio" name="trainingModel" value="parttime" checked /> Part-Time Model</label>
-                <label><input type="radio" name="trainingModel" value="fulltime" /> Full-Time Model (Scholarship)</label>
-              </div>
+              <select name="trainingModel">
+                <option value="parttime" selected>Part-Time Model</option>
+                <option value="fulltime">Full-Time Model (Scholarship)</option>
+              </select>
             </div>
             <!-- Geographic Distribution -->
             <div class="input-block">
@@ -220,11 +219,11 @@
                 Geographic Distribution <span class="reference">(Ref: Regional)</span>
                 <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: Centralized Distribution, Regional Distribution, Nationwide Distribution."></i>
               </label>
-              <div class="input-options">
-                <label><input type="radio" name="geographicDistribution" value="centralized" /> Centralized Distribution</label>
-                <label><input type="radio" name="geographicDistribution" value="regional" checked /> Regional Distribution</label>
-                <label><input type="radio" name="geographicDistribution" value="nationwide" /> Nationwide Distribution</label>
-              </div>
+              <select name="geographicDistribution">
+                <option value="centralized">Centralized Distribution</option>
+                <option value="regional" selected>Regional Distribution</option>
+                <option value="nationwide">Nationwide Distribution</option>
+              </select>
             </div>
           </div>
         </div>
@@ -238,12 +237,12 @@
                 Annual Training Capacity <span class="reference">(Ref: 100 trainees)</span>
                 <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: 100 (ref), 500, 1000, 2000+ trainees."></i>
               </label>
-              <div class="input-options">
-                <label><input type="radio" name="annualCapacity" value="100" checked /> 100 trainees</label>
-                <label><input type="radio" name="annualCapacity" value="500" /> 500 trainees</label>
-                <label><input type="radio" name="annualCapacity" value="1000" /> 1000 trainees</label>
-                <label><input type="radio" name="annualCapacity" value="2000" /> 2000+ trainees</label>
-              </div>
+              <select name="annualCapacity">
+                <option value="100" selected>100 trainees</option>
+                <option value="500">500 trainees</option>
+                <option value="1000">1000 trainees</option>
+                <option value="2000">2000+ trainees</option>
+              </select>
             </div>
             <!-- Stipend Support -->
             <div class="input-block">
@@ -251,11 +250,11 @@
                 Stipend Support <span class="reference">(Ref: ₹75,000)</span>
                 <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Monthly stipend options: ₹75,000, ₹100,000, ₹150,000."></i>
               </label>
-              <div class="input-options">
-                <label><input type="radio" name="stipendSupport" value="75000" checked /> ₹75,000</label>
-                <label><input type="radio" name="stipendSupport" value="100000" /> ₹100,000</label>
-                <label><input type="radio" name="stipendSupport" value="150000" /> ₹150,000</label>
-              </div>
+              <select name="stipendSupport">
+                <option value="75000" selected>₹75,000</option>
+                <option value="100000">₹100,000</option>
+                <option value="150000">₹150,000</option>
+              </select>
             </div>
           </div>
         </div>
@@ -269,12 +268,12 @@
                 Career Pathways <span class="reference">(Ref: Government roles)</span>
                 <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: Government roles, International, Academic & Research, Private/NGOs."></i>
               </label>
-              <div class="input-options">
-                <label><input type="radio" name="careerPathway" value="government" checked /> Government roles</label>
-                <label><input type="radio" name="careerPathway" value="international" /> International</label>
-                <label><input type="radio" name="careerPathway" value="academic" /> Academic & Research</label>
-                <label><input type="radio" name="careerPathway" value="private" /> Private/NGOs</label>
-              </div>
+              <select name="careerPathway">
+                <option value="government" selected>Government roles</option>
+                <option value="international">International</option>
+                <option value="academic">Academic & Research</option>
+                <option value="private">Private/NGOs</option>
+              </select>
             </div>
             <!-- Accreditation & Quality Assurance -->
             <div class="input-block">
@@ -282,11 +281,11 @@
                 Accreditation & Quality <span class="reference">(Ref: National)</span>
                 <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: Unaccredited, National Accreditation, International Accreditation."></i>
               </label>
-              <div class="input-options">
-                <label><input type="radio" name="accreditation" value="unaccredited" /> Unaccredited</label>
-                <label><input type="radio" name="accreditation" value="national" checked /> National</label>
-                <label><input type="radio" name="accreditation" value="international" /> International</label>
-              </div>
+              <select name="accreditation">
+                <option value="unaccredited">Unaccredited</option>
+                <option value="national" selected>National</option>
+                <option value="international">International</option>
+              </select>
             </div>
           </div>
         </div>
@@ -300,16 +299,17 @@
                 Total Cost <span class="reference">(Ref: Medium - ₹55,000/month)</span>
                 <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Monthly cost: Low (₹27K), Medium (₹55K), High (₹83K)."></i>
               </label>
-              <div class="input-options">
-                <label><input type="radio" name="totalCost" value="low" /> Low (₹27,000/month)</label>
-                <label><input type="radio" name="totalCost" value="medium" checked /> Medium (₹55,000/month)</label>
-                <label><input type="radio" name="totalCost" value="high" /> High (₹83,000/month)</label>
-              </div>
+              <select name="totalCost">
+                <option value="low">Low (₹27,000/month)</option>
+                <option value="medium" selected>Medium (₹55,000/month)</option>
+                <option value="high">High (₹83,000/month)</option>
+              </select>
             </div>
           </div>
         </div>
         <div class="buttons-row">
           <button type="button" onclick="openFETPScenario()">Calculate & View Results</button>
+          <button type="button" onclick="optimizeConfiguration()">Optimize Configuration</button>
         </div>
       </form>
     </div>
@@ -453,17 +453,6 @@
           <tbody></tbody>
         </table>
       </div>
-    </div>
-  </section>
-
-  <!-- Tutorial Tab -->
-  <section id="tutorialTab" class="tabcontent" tabindex="0">
-    <h2>Video Tutorial</h2>
-    <div class="video-container">
-      <p>Click below to watch the tutorial in a new window.</p>
-      <a href="https://lumen5.com/user/mesfingenie/steps-training-plann-frrsv/" target="_blank" class="tutorial-link">
-        <button class="tutorial-btn"><i class="fa-solid fa-play"></i> Watch Tutorial</button>
-      </a>
     </div>
   </section>
 
