@@ -1,4 +1,3 @@
-```javascript
 /* Advanced FETP Decision Aid Tool
  * - Tab switching and accordion toggling
  * - DCE model for uptake prediction
@@ -36,6 +35,9 @@ const mainCoefficients = {
   accreditation_unaccredited: -0.5,
   accreditation_national: 0.2,
   accreditation_international: 0.5,
+  trainingType_frontline: 0,
+  trainingType_intermediate: 0.3,
+  trainingType_advanced: 0.5,
   cost_low: 0.5,
   cost_medium: 0,
   cost_high: -0.5
@@ -45,6 +47,7 @@ const mainCoefficients = {
 const attributeOptions = {
   deliveryMethod: ['inperson', 'hybrid', 'online'],
   trainingModel: ['parttime', 'fulltime'],
+  trainingType: ['frontline', 'intermediate', 'advanced'],
   annualCapacity: ['100', '500', '1000', '2000'],
   stipendSupport: ['75000', '100000', '150000'],
   careerPathway: ['government', 'international', 'academic', 'private'],
@@ -100,6 +103,7 @@ function computeFETPUptake(sc) {
   let U = mainCoefficients.base;
   U += mainCoefficients[`delivery_${sc.deliveryMethod}`] || 0;
   U += mainCoefficients[`trainingModel_${sc.trainingModel}`] || 0;
+  U += mainCoefficients[`trainingType_${sc.trainingType}`] || 0;
   U += mainCoefficients[`capacity_${sc.annualCapacity}`] || 0;
   U += mainCoefficients[`stipend_${sc.stipendSupport}`] || 0;
   U += mainCoefficients[`career_${sc.careerPathway}`] || 0;
@@ -187,7 +191,7 @@ function renderFETPCostsBenefits() {
       <p><strong>Effective Enrollment:</strong> ${Math.round(effectiveEnrollment)}</p>
       <p><strong>Total Cost:</strong> ₹${totalCost.toLocaleString()} per month</p>
       <p><strong>Monetized Benefits:</strong> ₹${monetizedBenefits.toLocaleString()}</p>
-      <p><strong>Net Benefit:</strong> ₹${monetizedBenefits.toLocaleString()}</p>
+      <p><strong>Net Benefit:</strong> ₹${netBenefit.toLocaleString()}</p>
       <p><strong>Policy Recommendation:</strong> ${netBenefit < 0 ? "The program may not be cost-effective. Consider revising features." :
         netBenefit < 50000 ? "Modest benefits. Some improvements could enhance cost-effectiveness." :
         "This configuration appears highly cost-effective."}</p>
@@ -261,6 +265,7 @@ function saveFETPScenario() {
     <td>${sc.name}</td>
     <td>${sc.deliveryMethod}</td>
     <td>${sc.trainingModel}</td>
+    <td>${sc.trainingType}</td>
     <td>${sc.annualCapacity}</td>
     <td>₹${sc.stipendSupport}</td>
     <td>${sc.careerPathway}</td>
@@ -296,6 +301,7 @@ function exportFETPComparison() {
     doc.setFontSize(12);
     doc.text(`Delivery: ${sc.deliveryMethod}`, 15, yPos); yPos += 5;
     doc.text(`Model: ${sc.trainingModel}`, 15, yPos); yPos += 5;
+    doc.text(`Type: ${sc.trainingType}`, 15, yPos); yPos += 5;
     doc.text(`Capacity: ${sc.annualCapacity}`, 15, yPos); yPos += 5;
     doc.text(`Stipend: ₹${sc.stipendSupport}`, 15, yPos); yPos += 5;
     doc.text(`Career: ${sc.careerPathway}`, 15, yPos); yPos += 5;
@@ -323,14 +329,15 @@ function exportIndividualScenario() {
   doc.setFontSize(12);
   doc.text(`Delivery: ${scenario.deliveryMethod}`, 15, 30);
   doc.text(`Model: ${scenario.trainingModel}`, 15, 40);
-  doc.text(`Capacity: ${scenario.annualCapacity}`, 15, 50);
-  doc.text(`Stipend: ₹${scenario.stipendSupport}`, 15, 60);
-  doc.text(`Career: ${scenario.careerPathway}`, 15, 70);
-  doc.text(`Geographic: ${scenario.geographicDistribution}`, 15, 80);
-  doc.text(`Accreditation: ${scenario.accreditation}`, 15, 90);
-  doc.text(`Total Cost: ${scenario.totalCost}`, 15, 100);
-  doc.text(`Adoption Likelihood: ${scenario.uptake}%`, 15, 110);
-  doc.text(`Net Benefit: ₹${scenario.netBenefit}`, 15, 120);
+  doc.text(`Type: ${scenario.trainingType}`, 15, 50);
+  doc.text(`Capacity: ${scenario.annualCapacity}`, 15, 60);
+  doc.text(`Stipend: ₹${scenario.stipendSupport}`, 15, 70);
+  doc.text(`Career: ${scenario.careerPathway}`, 15, 80);
+  doc.text(`Geographic: ${scenario.geographicDistribution}`, 15, 90);
+  doc.text(`Accreditation: ${scenario.accreditation}`, 15, 100);
+  doc.text(`Total Cost: ${scenario.totalCost}`, 15, 110);
+  doc.text(`Adoption Likelihood: ${scenario.uptake}%`, 15, 120);
+  doc.text(`Net Benefit: ₹${scenario.netBenefit}`, 15, 130);
   doc.save(`Scenario_${index}.pdf`);
 }
 
