@@ -187,7 +187,7 @@ function renderFETPCostsBenefits() {
       <p><strong>Effective Enrollment:</strong> ${Math.round(effectiveEnrollment)}</p>
       <p><strong>Total Cost:</strong> ₹${totalCost.toLocaleString()} per month</p>
       <p><strong>Monetized Benefits:</strong> ₹${monetizedBenefits.toLocaleString()}</p>
-      <p><strong>Net Benefit:</strong> ₹${netBenefit.toLocaleString()}</p>
+      <p><strong>Net Benefit:</strong> ₹${monetizedBenefits.toLocaleString()}</p>
       <p><strong>Policy Recommendation:</strong> ${netBenefit < 0 ? "The program may not be cost-effective. Consider revising features." :
         netBenefit < 50000 ? "Modest benefits. Some improvements could enhance cost-effectiveness." :
         "This configuration appears highly cost-effective."}</p>
