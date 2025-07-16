@@ -4,481 +4,372 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Advanced FETP Decision Aid Tool</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"/>
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- jsPDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-<div class="container">
-  <header>
-    <h1>Advanced FETP Decision Aid Tool</h1>
-    <p>
-      The Advanced Field Epidemiology Training Program (FETP) strengthens India’s public health workforce.
-      Configure program options to predict uptake, evaluate cost-benefit tradeoffs, and inform policy design.
-    </p>
-    <button id="faqBtn" class="faq-btn" aria-label="Open FAQ">
-      <i class="fa-solid fa-question-circle"></i> FAQ
-    </button>
-  </header>
-
-  <nav class="tabs" role="tablist">
-    <button class="tablink active" data-tab="introTab" aria-selected="true">
-      <i class="fa-solid fa-info-circle"></i><span> Introduction</span>
-    </button>
-    <button class="tablink" data-tab="instructionsTab" aria-selected="false">
-      <i class="fa-solid fa-circle-question"></i><span> Instructions</span>
-    </button>
-    <button class="tablink" data-tab="attributesTab" aria-selected="false">
-      <i class="fa-solid fa-list"></i><span> Attributes</span>
-    </button>
-    <button class="tablink" data-tab="inputsTab" aria-selected="false">
-      <i class="fa-solid fa-sliders"></i><span> Inputs</span>
-    </button>
-    <button class="tablink" data-tab="probTab" aria-selected="false">
-      <i class="fa-solid fa-chart-pie"></i><span> Adoption Likelihood</span>
-    </button>
-    <button class="tablink" data-tab="costsTab" aria-selected="false">
-      <i class="fa-solid fa-calculator"></i><span> Costs & Benefits</span>
-    </button>
-    <button class="tablink" data-tab="scenariosTab" aria-selected="false">
-      <i class="fa-solid fa-folder-open"></i><span> Saved Scenarios</span>
-    </button>
-  </nav>
-
-  <!-- Introduction Tab -->
-  <section id="introTab" class="tabcontent" tabindex="0" style="display: block;">
-    <div class="intro-box">
-      <p>
-        The Advanced FETP Decision Aid Tool is tailored for India’s diverse healthcare landscape, from urban hospitals to rural centers.
-        Adjust program features to simulate training models, balancing accessibility, quality, and cost.
-      </p>
-      <ul>
-        <li><strong>Instructions</strong>: Follow the guide to configure program options.</li>
-        <li><strong>Attributes</strong>: Review key features with detailed information.</li>
-        <li><strong>Inputs</strong>: Select options to define your scenario.</li>
-        <li><strong>Adoption Likelihood</strong>: View predicted stakeholder support.</li>
-        <li><strong>Costs & Benefits</strong>: Analyze cost-benefit breakdowns.</li>
-        <li><strong>Saved Scenarios</strong>: Save and compare configurations.</li>
-      </ul>
+  <div class="container">
+    <header class="text-center">
+      <h1>Advanced FETP Decision Aid Tool</h1>
+      <p class="lead">Explore different configurations for the Advanced Field Epidemiology Training Program (FETP) to predict programme uptake, evaluate cost–benefit tradeoffs, and inform policy design.</p>
+    </header>
+    <div class="instruction-banner card">
+      <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="Follow these steps to use the tool"></i>
+      <strong>How to Use:</strong> Configure settings in <em>Inputs</em>, adjust costs in <em>Costs & Benefits</em>, and click <em>Calculate & View Results</em> to see results in a pop-up. Save scenarios in <em>Scenarios</em> for comparison.
     </div>
-  </section>
-
-  <!-- Instructions Tab -->
-  <section id="instructionsTab" class="tabcontent" tabindex="0">
-    <div class="calculation-info instructions">
-      <h2>How to Use the Advanced FETP Tool</h2>
-      <ol>
-        <li><strong>Review Attributes</strong>: Explore key program features in the Attributes tab.</li>
-        <li><strong>Configure Inputs</strong>: Use the Inputs tab to select options, guided by reference values.</li>
-        <li><strong>View Adoption Likelihood</strong>: See predicted stakeholder support via charts.</li>
-        <li><strong>Analyze Costs & Benefits</strong>: Review dynamic cost-benefit analysis.</li>
-        <li><strong>Save Scenarios</strong>: Store and export scenarios for comparison.</li>
-        <li><strong>Optimize Configuration</strong>: Use the Optimize button to maximize uptake.</li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- Attributes Tab -->
-  <section id="attributesTab" class="tabcontent" tabindex="0">
-    <h2>Key Program Features</h2>
-    <div class="attributes-grid">
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fa-solid fa-chalkboard"></i>
-          <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Delivery modes: In-Person (hands-on training), Hybrid (online with in-person sessions), Fully Online (digital learning via government platforms)."></i>
-        </div>
-        <div class="attribute-content">
-          <h3>Training Delivery Method</h3>
-          <p>In-Person, Hybrid, Fully Online</p>
-        </div>
-      </div>
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fa-solid fa-user-clock"></i>
-          <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Time commitment and support: Part-Time Model (work while training) or Full-Time Model (full-time with scholarship)."></i>
-        </div>
-        <div class="attribute-content">
-          <h3>Training Model</h3>
-          <p>Part-Time, Full-Time (Scholarship)</p>
-        </div>
-      </div>
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fa-solid fa-people-group"></i>
-          <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Annual trainee enrollment: 100 (reference), 500, 1000, or 2000+ trainees."></i>
-        </div>
-        <div class="attribute-content">
-          <h3>Annual Training Capacity</h3>
-          <p>100, 500, 1000, 2000+ trainees</p>
-        </div>
-      </div>
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fa-solid fa-hand-holding-dollar"></i>
-          <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Monthly financial support options: ₹75,000, ₹100,000, or ₹150,000."></i>
-        </div>
-        <div class="attribute-content">
-          <h3>Stipend Support</h3>
-          <p>₹75,000–₹150,000/month</p>
-        </div>
-      </div>
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fa-solid fa-briefcase"></i>
-          <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Post-training career options: Government roles, International organizations, Academic/Research, Private/NGOs."></i>
-        </div>
-        <div class="attribute-content">
-          <h3>Career Pathways</h3>
-          <p>Government, International, Academic, Private/NGOs</p>
-        </div>
-      </div>
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fa-solid fa-map"></i>
-          <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Program accessibility: Centralized, Regional, or Nationwide distribution."></i>
-        </div>
-        <div class="attribute-content">
-          <h3>Geographic Distribution</h3>
-          <p>Centralized, Regional, Nationwide</p>
-        </div>
-      </div>
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fa-solid fa-certificate"></i>
-          <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Program credibility: Unaccredited, National Accreditation, or International Accreditation."></i>
-        </div>
-        <div class="attribute-content">
-          <h3>Accreditation & Quality</h3>
-          <p>Unaccredited, National, International</p>
-        </div>
-      </div>
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fa-solid fa-graduation-cap"></i>
-          <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Training levels: Frontline (basic field skills), Intermediate (mid-level epidemiology), Advanced (expert-level training)."></i>
-        </div>
-        <div class="attribute-content">
-          <h3>Type of Training</h3>
-          <p>Frontline, Intermediate, Advanced</p>
-        </div>
-      </div>
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fa-solid fa-calculator"></i>
-          <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Monthly costs (direct and indirect): Low (₹27,000), Medium (₹55,000), High (₹83,000)."></i>
-        </div>
-        <div class="attribute-content">
-          <h3>Total Cost</h3>
-          <p>Low (₹27K), Medium (₹55K), High (₹83K)/month</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Inputs Tab -->
-  <section id="inputsTab" class="tabcontent" tabindex="0">
-    <div class="input-card">
-      <h2>Configure Program Options <i class="fa-solid fa-info-circle alternative-info-input" data-tooltip="Select options below to customize your scenario."></i></h2>
-      <p>All fields are required. Reference values are provided for guidance.</p>
-      <form onsubmit="event.preventDefault();">
-        <!-- Group 1: Program Format -->
-        <div class="group-card">
-          <h3>Program Format</h3>
-          <div class="inputs-grid">
-            <div class="input-block">
-              <label class="input-label">
-                Training Delivery Method <span class="reference">(Ref: Hybrid)</span>
-                <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: In-Person (hands-on training), Hybrid (online with in-person sessions), Fully Online (digital learning via government platforms)."></i>
-              </label>
-              <select name="deliveryMethod" required>
-                <option value="inperson">In-Person</option>
-                <option value="hybrid" selected>Hybrid</option>
-                <option value="online">Fully Online</option>
-              </select>
-            </div>
-            <div class="input-block">
-              <label class="input-label">
-                Training Model <span class="reference">(Ref: Part-Time)</span>
-                <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: Part-Time Model (work while training) or Full-Time Model (full-time with scholarship)."></i>
-              </label>
-              <select name="trainingModel" required>
-                <option value="parttime" selected>Part-Time Model</option>
-                <option value="fulltime">Full-Time Model (Scholarship)</option>
-              </select>
-            </div>
-            <div class="input-block">
-              <label class="input-label">
-                Type of Training <span class="reference">(Ref: Advanced)</span>
-                <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: Frontline (basic field skills), Intermediate (mid-level epidemiology), Advanced (expert-level training)."></i>
-              </label>
-              <select name="trainingType" required>
-                <option value="frontline">Frontline</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced" selected>Advanced</option>
-              </select>
-            </div>
-            <div class="input-block">
-              <label class="input-label">
-                Geographic Distribution <span class="reference">(Ref: Regional)</span>
-                <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: Centralized Distribution, Regional Distribution, Nationwide Distribution."></i>
-              </label>
-              <select name="geographicDistribution" required>
-                <option value="centralized">Centralized Distribution</option>
-                <option value="regional" selected>Regional Distribution</option>
-                <option value="nationwide">Nationwide Distribution</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <!-- Group 2: Operational Capacity & Support -->
-        <div class="group-card">
-          <h3>Operational Capacity & Support</h3>
-          <div class="inputs-grid">
-            <div class="input-block">
-              <label class="input-label">
-                Annual Training Capacity <span class="reference">(Ref: 100 trainees)</span>
-                <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: 100 (reference), 500, 1000, or 2000+ trainees."></i>
-              </label>
-              <select name="annualCapacity" required>
-                <option value="100" selected>100 trainees</option>
-                <option value="500">500 trainees</option>
-                <option value="1000">1000 trainees</option>
-                <option value="2000">2000+ trainees</option>
-              </select>
-            </div>
-            <div class="input-block">
-              <label class="input-label">
-                Stipend Support <span class="reference">(Ref: ₹75,000)</span>
-                <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Monthly stipend options: ₹75,000, ₹100,000, or ₹150,000."></i>
-              </label>
-              <select name="stipendSupport" required>
-                <option value="75000" selected>₹75,000</option>
-                <option value="100000">₹100,000</option>
-                <option value="150000">₹150,000</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <!-- Group 3: Outcomes & Recognition -->
-        <div class="group-card">
-          <h3>Outcomes & Recognition</h3>
-          <div class="inputs-grid">
-            <div class="input-block">
-              <label class="input-label">
-                Career Pathways <span class="reference">(Ref: Government roles)</span>
-                <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: Government roles, International, Academic & Research, Private/NGOs."></i>
-              </label>
-              <select name="careerPathway" required>
-                <option value="government" selected>Government roles</option>
-                <option value="international">International</option>
-                <option value="academic">Academic & Research</option>
-                <option value="private">Private/NGOs</option>
-              </select>
-            </div>
-            <div class="input-block">
-              <label class="input-label">
-                Accreditation & Quality <span class="reference">(Ref: National)</span>
-                <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Options: Unaccredited, National Accreditation, International Accreditation."></i>
-              </label>
-              <select name="accreditation" required>
-                <option value="unaccredited">Unaccredited</option>
-                <option value="national" selected>National</option>
-                <option value="international">International</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <!-- Group 4: Overall Program Cost -->
-        <div class="group-card">
-          <h3>Overall Program Cost</h3>
-          <div class="inputs-grid">
-            <div class="input-block">
-              <label class="input-label">
-                Total Cost <span class="reference">(Ref: Medium - ₹55,000/month)</span>
-                <i class="fa-solid fa-info-circle alternative-info" data-tooltip="Monthly cost: Low (₹27,000), Medium (₹55,000), High (₹83,000)."></i>
-              </label>
-              <select name="totalCost" required>
-                <option value="low">Low (₹27,000/month)</option>
-                <option value="medium" selected>Medium (₹55,000/month)</option>
-                <option value="high">High (₹83,000/month)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="buttons-row">
-          <button type="button" onclick="openFETPScenario()">Calculate & View Results</button>
-          <button type="button" onclick="optimizeConfiguration()">Optimize Configuration</button>
-        </div>
-      </form>
-    </div>
-  </section>
-
-  <!-- Popup Modal for Results -->
-  <div id="resultModal" class="modal" role="dialog" aria-labelledby="modalResultsTitle">
-    <div class="modal-content">
-      <span class="close-button" onclick="closeModal()" aria-label="Close modal">×</span>
-      <h2 id="modalResultsTitle">Calculation Results</h2>
-      <div id="modalResults"></div>
-      <div class="chart-box">
-        <h3>Cost-Benefit Analysis</h3>
-        <canvas id="costBenefitChart"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <!-- Adoption Likelihood Tab -->
-  <section id="probTab" class="tabcontent" tabindex="0">
-    <div class="calculation-info">
-      <h2>Programme Adoption Likelihood</h2>
-      <p>View forecasted stakeholder support based on your configuration.</p>
-      <div class="buttons-row">
-        <button onclick="renderFETPProbChart()">Show Probability Plot</button>
-      </div>
-      <div class="chart-grid">
-        <div class="chart-box">
-          <h3>Adoption Likelihood</h3>
-          <canvas id="probChartFETP"></canvas>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Costs & Benefits Tab -->
-  <section id="costsTab" class="tabcontent" tabindex="0">
-    <div class="calculation-info">
-      <h2>Costs & Benefits Analysis</h2>
-      <p>
-        Estimates overall program costs and monetized benefits.
-        <br/><small>
-          Benefits = (QALY Gain per Participant × Effective Enrollment × ₹50,000). Effective Enrollment = Annual Capacity × Predicted Uptake.
-        </small>
-      </p>
-      <div class="calculation-info" id="dynamicCostEstimate">
-        <h3>Selected Total Cost</h3>
-        <p id="estimatedCostDisplay">Calculate to update cost.</p>
-      </div>
-      <div class="qaly-selector">
-        <label for="qalyFETPSelect">Select QALY Gain per Participant:</label>
-        <select id="qalyFETPSelect" onchange="renderFETPCostsBenefits()">
-          <option value="low">Low (0.01 QALYs)</option>
-          <option value="moderate" selected>Moderate (0.05 QALYs)</option>
-          <option value="high">High (0.08 QALYs)</option>
-        </select>
-      </div>
-      <div id="costsFETPResults"></div>
-      <div class="modelling-assumptions">
-        <h3><i class="fa-solid fa-lightbulb"></i> Assumptions & Explanations</h3>
-        <p><strong>Total Cost:</strong> Based on selected cost option (Low: ₹27K, Medium: ₹55K, High: ₹83K/month).</p>
-        <p><strong>Benefits:</strong> Estimated as (QALY Gain × Effective Enrollment × ₹50,000).</p>
-      </div>
-      <div class="cost-icons">
-        <button class="buttons-row" onclick="toggleCostAccordion()">Cost Breakdown</button>
-        <button class="buttons-row" onclick="toggleFETPBenefitsAnalysis()">Benefits Explanation</button>
-        <button class="buttons-row" onclick="exportIndividualScenario()">Export Selected Scenario</button>
-      </div>
-      <div id="detailedCostBreakdown" style="display:none;">
-        <div class="accordion-item">
-          <h3>Direct Costs</h3>
-          <div class="accordion-content">
-            <div class="cost-card-detail">
-              <i class="fa-solid fa-building"></i>
-              <p><strong>Tuition/Registration</strong><br/>e.g., ₹25,000/month</p>
-            </div>
-            <div class="cost-card-detail">
-              <i class="fa-solid fa-book"></i>
-              <p><strong>Training Materials</strong><br/>Included</p>
-            </div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h3>Indirect Costs</h3>
-          <div class="accordion-content">
-            <div class="cost-card-detail">
-              <i class="fa-solid fa-road"></i>
-              <p><strong>Travel Expenses</strong><br/>e.g., ₹2,000/month</p>
-            </div>
-            <div class="cost-card-detail">
-              <i class="fa-solid fa-tools"></i>
-              <p><strong>Administrative Overhead</strong><br/>Included</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="detailedFETPBenefitsAnalysis" class="cost-cards" style="display:none;">
-        <div class="cost-card">
-          <h3><i class="fa-solid fa-hand-holding-dollar"></i> QALY Benefits</h3>
-          <p>Benefits = (QALY Gain × Effective Enrollment × ₹50,000).</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Saved Scenarios Tab -->
-  <section id="scenariosTab" class="tabcontent" tabindex="0">
-    <div class="calculation-info">
-      <h2>Saved Scenarios</h2>
-      <p>
-        View saved scenarios with their options, adoption likelihood, and net benefit.
-        Export individual scenarios or a comprehensive PDF comparison.
-      </p>
-      <div class="buttons-row">
-        <button onclick="saveFETPScenario()">Save Current Scenario</button>
-        <button onclick="exportFETPComparison()">Export Overall PDF</button>
-      </div>
-      <div class="table-container">
-        <table id="FETPScenarioTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Delivery</th>
-              <th>Model</th>
-              <th>Type</th>
-              <th>Capacity</th>
-              <th>Stipend</th>
-              <th>Career</th>
-              <th>Geographic</th>
-              <th>Accreditation</th>
-              <th>Total Cost</th>
-              <th>Adoption (%)</th>
-              <th>Net Benefit (₹)</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ Overlay -->
-  <div id="faqOverlay" class="faq-overlay" role="dialog" aria-labelledby="faqTitle">
-    <div class="faq-content">
-      <span class="close-faq" onclick="toggleFAQ()" aria-label="Close FAQ">×</span>
-      <h2 id="faqTitle">Frequently Asked Questions</h2>
-      <ul>
-        <li><strong>What is Predicted Uptake?</strong>
-          <p>Forecasted probability of stakeholder endorsement. Effective Enrollment = Annual Capacity × Predicted Uptake.</p>
+    <nav class="tabs" role="tablist">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="introTab-tab" data-bs-toggle="tab" data-bs-target="#introTab" type="button" role="tab" aria-controls="introTab" aria-selected="true">
+            <i class="fa-solid fa-info-circle info-icon" data-bs-toggle="tooltip" title="Tool overview"></i> Introduction
+          </button>
         </li>
-        <li><strong>How is Total Cost Determined?</strong>
-          <p>Includes direct fees and indirect expenses (e.g., travel, administrative overhead).</p>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="attributesTab-tab" data-bs-toggle="tab" data-bs-target="#attributesTab" type="button" role="tab" aria-controls="attributesTab" aria-selected="false">
+            <i class="fa-solid fa-list info-icon" data-bs-toggle="tooltip" title="Policy attributes"></i> Attributes
+          </button>
         </li>
-        <li><strong>How are Benefits Computed?</strong>
-          <p>Monetized Benefits = (QALY Gain per Participant × Effective Enrollment × ₹50,000).</p>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="inputsTab-tab" data-bs-toggle="tab" data-bs-target="#inputsTab" type="button" role="tab" aria-controls="inputsTab" aria-selected="false">
+            <i class="fa-solid fa-sliders info-icon" data-bs-toggle="tooltip" title="Configure policy"></i> Inputs
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="probTab-tab" data-bs-toggle="tab" data-bs-target="#probTab" type="button" role="tab" aria-controls="probTab" aria-selected="false">
+            <i class="fa-solid fa-chart-pie info-icon" data-bs-toggle="tooltip" title="Predicted acceptance"></i> Uptake
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="costsTab-tab" data-bs-toggle="tab" data-bs-target="#costsTab" type="button" role="tab" aria-controls="costsTab" aria-selected="false">
+            <i class="fa-solid fa-calculator info-icon" data-bs-toggle="tooltip" title="Cost-benefit analysis"></i> Costs & Benefits
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="scenariosTab-tab" data-bs-toggle="tab" data-bs-target="#scenariosTab" type="button" role="tab" aria-controls="scenariosTab" aria-selected="false">
+            <i class="fa-solid fa-folder-open info-icon" data-bs-toggle="tooltip" title="Saved scenarios"></i> Scenarios
+          </button>
         </li>
       </ul>
-      <p><em>Future enhancements may include real-time data integration and advanced analytics.</em></p>
+    </nav>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="introTab" role="tabpanel" aria-labelledby="introTab-tab">
+        <div class="card">
+          <h2>Introduction <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="What this tool does"></i></h2>
+          <p>This interactive tool enables you to evaluate FETP program configurations by modeling public acceptance and cost-benefit outcomes. Using DCE survey data, it predicts program uptake and calculates economic impacts with realistic estimates, empowering informed decision-making.</p>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="attributesTab" role="tabpanel" aria-labelledby="attributesTab-tab">
+        <h2>Key Program Attributes <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="What each setting means"></i></h2>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card attribute-card">
+              <div class="attribute-icon"><i class="fa-solid fa-chalkboard"></i></div>
+              <div class="attribute-content">
+                <h4>Training Delivery Method</h4>
+                <p><strong>Default:</strong> Hybrid</p>
+                <p><strong>Alternatives:</strong> In-Person, Fully Online</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card attribute-card">
+              <div class="attribute-icon"><i class="fa-solid fa-user-clock"></i></div>
+              <div class="attribute-content">
+                <h4>Training Model</h4>
+                <p><strong>Default:</strong> Part-Time</p>
+                <p><strong>Alternative:</strong> Full-Time (Scholarship)</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card attribute-card">
+              <div class="attribute-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+              <div class="attribute-content">
+                <h4>Type of Training</h4>
+                <p><strong>Default:</strong> Advanced</p>
+                <p><strong>Alternatives:</strong> Frontline, Intermediate</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card attribute-card">
+              <div class="attribute-icon"><i class="fa-solid fa-people-group"></i></div>
+              <div class="attribute-content">
+                <h4>Annual Training Capacity</h4>
+                <p><strong>Default:</strong> 100 trainees</p>
+                <p><strong>Alternatives:</strong> 500, 1000, 2000+ trainees</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card attribute-card">
+              <div class="attribute-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+              <div class="attribute-content">
+                <h4>Stipend Support</h4>
+                <p><strong>Default:</strong> ₹75,000</p>
+                <p><strong>Alternatives:</strong> ₹100,000, ₹150,000</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card attribute-card">
+              <div class="attribute-icon"><i class="fa-solid fa-briefcase"></i></div>
+              <div class="attribute-content">
+                <h4>Career Pathways</h4>
+                <p><strong>Default:</strong> Government roles</p>
+                <p><strong>Alternatives:</strong> International, Academic & Research, Private/NGOs</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card attribute-card">
+              <div class="attribute-icon"><i class="fa-solid fa-map"></i></div>
+              <div class="attribute-content">
+                <h4>Geographic Distribution</h4>
+                <p><strong>Default:</strong> Regional</p>
+                <p><strong>Alternatives:</strong> Centralized, Nationwide</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card attribute-card">
+              <div class="attribute-icon"><i class="fa-solid fa-certificate"></i></div>
+              <div class="attribute-content">
+                <h4>Accreditation & Quality</h4>
+                <p><strong>Default:</strong> National</p>
+                <p><strong>Alternatives:</strong> Unaccredited, International</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card attribute-card">
+              <div class="attribute-icon"><i class="fa-solid fa-calculator"></i></div>
+              <div class="attribute-content">
+                <h4>Total Cost</h4>
+                <p><strong>Default:</strong> Medium (₹55,000/month)</p>
+                <p><strong>Alternatives:</strong> Low (₹27,000/month), High (₹83,000/month)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="inputsTab" role="tabpanel" aria-labelledby="inputsTab-tab">
+        <div class="card">
+          <h2>Configure Program <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="Choose program settings"></i></h2>
+          <form>
+            <div class="input-cards row">
+              <div class="col-md-4 input-level-card">
+                <h3>Training Delivery Method</h3>
+                <p>(Default: Hybrid)</p>
+                <select name="deliveryMethod" class="form-control">
+                  <option value="inperson">In-Person</option>
+                  <option value="hybrid" selected>Hybrid</option>
+                  <option value="online">Fully Online</option>
+                </select>
+              </div>
+              <div class="col-md-4 input-level-card">
+                <h3>Training Model</h3>
+                <p>(Default: Part-Time)</p>
+                <select name="trainingModel" class="form-control">
+                  <option value="parttime" selected>Part-Time Model</option>
+                  <option value="fulltime">Full-Time Model (Scholarship)</option>
+                </select>
+              </div>
+              <div class="col-md-4 input-level-card">
+                <h3>Type of Training</h3>
+                <p>(Default: Advanced)</p>
+                <select name="trainingType" class="form-control">
+                  <option value="frontline">Frontline</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced" selected>Advanced</option>
+                </select>
+              </div>
+              <div class="col-md-4 input-level-card">
+                <h3>Annual Training Capacity</h3>
+                <p>(Default: 100 trainees)</p>
+                <select name="annualCapacity" class="form-control">
+                  <option value="100" selected>100 trainees</option>
+                  <option value="500">500 trainees</option>
+                  <option value="1000">1000 trainees</option>
+                  <option value="2000">2000+ trainees</option>
+                </select>
+              </div>
+              <div class="col-md-4 input-level-card">
+                <h3>Stipend Support</h3>
+                <p>(Default: ₹75,000)</p>
+                <select name="stipendSupport" class="form-control">
+                  <option value="75000" selected>₹75,000</option>
+                  <option value="100000">₹100,000</option>
+                  <option value="150000">₹150,000</option>
+                </select>
+              </div>
+              <div class="col-md-4 input-level-card">
+                <h3>Career Pathways</h3>
+                <p>(Default: Government roles)</p>
+                <select name="careerPathway" class="form-control">
+                  <option value="government" selected>Government roles</option>
+                  <option value="international">International</option>
+                  <option value="academic">Academic & Research</option>
+                  <option value="private">Private/NGOs</option>
+                </select>
+              </div>
+              <div class="col-md-4 input-level-card">
+                <h3>Geographic Distribution</h3>
+                <p>(Default: Regional)</p>
+                <select name="geographicDistribution" class="form-control">
+                  <option value="centralized">Centralized Distribution</option>
+                  <option value="regional" selected>Regional Distribution</option>
+                  <option value="nationwide">Nationwide Distribution</option>
+                </select>
+              </div>
+              <div class="col-md-4 input-level-card">
+                <h3>Accreditation & Quality</h3>
+                <p>(Default: National)</p>
+                <select name="accreditation" class="form-control">
+                  <option value="unaccredited">Unaccredited</option>
+                  <option value="national" selected>National</option>
+                  <option value="international">International</option>
+                </select>
+              </div>
+              <div class="col-md-4 input-level-card">
+                <h3>Total Cost</h3>
+                <p>(Default: Medium - ₹55,000/month)</p>
+                <select name="totalCost" class="form-control">
+                  <option value="low">Low (₹27,000/month)</option>
+                  <option value="medium" selected>Medium (₹55,000/month)</option>
+                  <option value="high">High (₹83,000/month)</option>
+                </select>
+              </div>
+            </div>
+            <div class="buttons-row mt-3">
+              <button type="button" class="btn btn-secondary" onclick="resetInputs()">Reset</button>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#resultModal" onclick="calculateScenario()">Calculate & View Results</button>
+            </div>
+          </form>
+          <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="resultModalLabel">Scenario Results</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div id="modalResults"></div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="probTab" role="tabpanel" aria-labelledby="probTab-tab">
+        <div class="card">
+          <h4>Predicted Uptake <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="Percentage of people likely to accept the program"></i></h4>
+          <p>Estimates the percentage of people who would accept the program based on your policy settings. Calculate a scenario to see results.</p>
+          <div class="progress mt-3">
+            <div id="uptakeBar" class="progress-bar bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+          </div>
+          <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#uptakeModal" onclick="showUptakeRecommendations()">Recommendation</button>
+        </div>
+        <div class="modal fade" id="uptakeModal" tabindex="-1" aria-labelledby="uptakeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="uptakeModalLabel">Uptake Recommendations</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div id="uptakeResults"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="costsTab" role="tabpanel" aria-labelledby="costsTab-tab">
+        <div class="card">
+          <h4>Cost–Benefit Analysis <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="Detailed breakdown of costs and benefits"></i></h4>
+          <p>Compares the costs of implementing the program to health benefits, measured in Quality-Adjusted Life Years (QALYs). Calculate a scenario to see results.</p>
+          <div class="row">
+            <div class="col-md-6">
+              <h5>Cost Parameters (Optional: adjust for custom analysis)</h5>
+              <div class="form-group mb-3">
+                <label for="fixed_vaccineProcurement">Vaccine Procurement (fixed)</label>
+                <input type="number" id="fixed_vaccineProcurement" class="form-control" value="80000">
+              </div>
+              <div class="form-group mb-3">
+                <label for="fixed_administration">Administration & Staffing</label>
+                <input type="number" id="fixed_administration" class="form-control" value="30000">
+              </div>
+              <div class="form-group mb-3">
+                <label for="fixed_legal">Legal & Compliance</label>
+                <input type="number" id="fixed_legal" class="form-control" value="10000">
+              </div>
+              <div class="form-group mb-3">
+                <label for="fixed_communication">Communication & Outreach</label>
+                <input type="number" id="fixed_communication" class="form-control" value="15000">
+              </div>
+              <div class="form-group mb-3">
+                <label for="fixed_monitoring">Monitoring & Data Systems</label>
+                <input type="number" id="fixed_monitoring" class="form-control" value="20000">
+              </div>
+              <div class="form-group mb-3">
+                <label for="variablePerPerson">Variable Cost per Person</label>
+                <input type="number" id="variablePerPerson" class="form-control" value="40">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h5>Benefit Scenario (Value per QALY)</h5>
+              <select id="benefitScenario" class="form-control mb-3">
+                <option value="low">Low (A$40k / €35k)</option>
+                <option value="medium" selected>Medium (A$50k / €45k)</option>
+                <option value="high">High (A$60k / €55k)</option>
+              </select>
+              <h5>Cost of Living Adjustment</h5>
+              <select id="adjustCOL" class="form-control mb-3">
+                <option value="yes">Yes</option>
+                <option value="no" selected>No</option>
+              </select>
+            </div>
+          </div>
+          <div id="costsBenefitsResults"></div>
+          <canvas id="costBenefitChart" class="chart-box"></canvas>
+          <canvas id="netBenefitChart" class="chart-box"></canvas>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="scenariosTab" role="tabpanel" aria-labelledby="scenariosTab-tab">
+        <div class="card">
+          <h4>Saved Scenarios <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="Review and export saved configurations"></i></h4>
+          <p>Save and compare program scenarios to analyze their impacts.</p>
+          <button onclick="saveScenario()" class="btn btn-primary me-2">Save Scenario</button>
+          <button onclick="openComparison()" class="btn btn-secondary me-2">Compare & Export PDF</button>
+          <button onclick="downloadCSV()" class="btn btn-secondary">Download CSV</button>
+          <div class="table-responsive mt-3">
+            <table id="scenarioTable" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th><th>Delivery</th><th>Model</th><th>Type</th><th>Capacity</th><th>Stipend</th><th>Career</th><th>Geographic</th><th>Accreditation</th><th>Total Cost</th><th>Uptake%</th><th>Net Benefit</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
+    <footer class="text-center mt-4">
+      <p>© 2025 Advanced FETP Decision Aid Tool</p>
+    </footer>
   </div>
-
-  <footer>
-    <p>© 2025 Advanced FETP Decision Aid. All Rights Reserved. Newcastle Business School, The University of Newcastle, Australia</p>
-  </footer>
-</div>
-<script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
