@@ -1,6 +1,6 @@
 
 /* ===================================================
-   STEPS FETP India Decision Aid
+   STEPS FETP India Decision Aida
    Script with interactive DCE sensitivity tab
    =================================================== */
 
