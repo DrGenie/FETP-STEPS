@@ -1,3 +1,4 @@
+
 {
   "meta": {
     "name": "STEPS FETP India epidemiological configuration",
@@ -5,27 +6,39 @@
     "description": "Default multipliers and indicative monetary values for graduates and outbreak responses used by the STEPS decision aid.",
     "lastUpdated": "2025-12-02",
     "author": "Mesfin Genie and collaborators",
-    "notes": "Version 1.2 adds structured sections for time horizon, currency, tier-specific multipliers and values, defaults, and ranges while preserving backwards compatibility with Versions 1.0 and 1.1."
+    "notes": "Version 1.2 adds structured sections for time horizon, currency, tier-specific multipliers and values, defaults, and ranges while preserving backwards compatibility with Versions 1.0 and 1.1.",
+    "backwardsCompatibleWith": [
+      "1.0",
+      "1.1"
+    ],
+    "intendedUse": "These parameters are used to translate DCE-derived willingness-to-pay for FETP programmes into indicative monetary benefits (per graduate and per outbreak response) over a specified planning horizon.",
+    "documentationUrl": "https://example.org/steps-fetp-india/technical-appendix",
+    "configType": "epidemiological_and_monetary"
   },
+
   "general": {
     "planningHorizonYears": 5,
     "inrPerUsd": 83,
     "discountRateAnnual": 0.03,
     "applyDiscountingToOutbreakBenefits": false
   },
+
   "time_horizon": {
     "planning_years": 5,
     "discount_rate_annual": 0.03,
     "apply_discounting_to_outbreak_benefits": false
   },
+
   "currency": {
     "base_currency": "INR",
     "display_currency_options": [
       "INR",
       "USD"
     ],
-    "inr_per_usd_display": 83
+    "inr_per_usd_display": 83,
+    "default_display_currency": "INR"
   },
+
   "tiers": {
     "frontline": {
       "label": "Frontline",
@@ -76,6 +89,7 @@
       "maxValuePerOutbreak": 80000000
     }
   },
+
   "epi_multipliers": {
     "frontline": {
       "graduates_per_cohort_share": 0.9,
@@ -93,6 +107,7 @@
       "duration_months": 24
     }
   },
+
   "values": {
     "frontline": {
       "value_per_graduate_inr": 400000,
@@ -107,6 +122,7 @@
       "value_per_outbreak_response_inr": 40000000
     }
   },
+
   "defaults": {
     "default_tier": "frontline",
     "default_model": "mxl",
@@ -114,8 +130,10 @@
     "default_benefit_definition": "dce_only_overall",
     "default_benefit_definition_with_epi": "dce_plus_epi_overall",
     "default_display_currency": "INR",
-    "default_apply_discounting_to_outbreak_benefits": false
+    "default_apply_discounting_to_outbreak_benefits": false,
+    "default_epi_scenario": "baseline"
   },
+
   "ranges": {
     "graduates_per_cohort_share": {
       "min": 0.5,
@@ -146,6 +164,7 @@
       "max": 100
     }
   },
+
   "cost_templates": {
     "who_frontline_6_cohorts": {
       "label": "WHO-style Frontline programme (6 cohorts over horizon)",
@@ -166,6 +185,7 @@
       "notes": "Illustrative template for advanced FETP roll-out."
     }
   },
+
   "advanced_defaults": {
     "graduation_shares": {
       "frontline": 0.9,
@@ -191,43 +211,87 @@
     "discount_rate_annual": 0.03,
     "inr_per_usd_display": 83
   },
+
   "ui": {
     "graduationRate": {
       "min": 0.6,
       "max": 1.0,
-      "step": 0.01
+      "step": 0.01,
+      "label": "Graduation rate (share of trainees graduating)",
+      "unit": "share",
+      "decimals": 2,
+      "rangeKey": "graduates_per_cohort_share",
+      "group": "epi_core",
+      "helpText": "Proportion of trainees who successfully graduate from each cohort (between 0 and 1)."
     },
     "outbreaksPerCohortPerYear": {
       "min": 0.0,
       "max": 2.0,
-      "step": 0.05
+      "step": 0.05,
+      "label": "Outbreak responses per cohort per year",
+      "unit": "outbreaks/year",
+      "decimals": 2,
+      "rangeKey": "outbreaks_per_cohort_per_year",
+      "group": "epi_core",
+      "helpText": "Average number of outbreak responses that a cohort contributes to in a typical year."
     },
     "valuePerGraduate": {
       "min": 200000,
       "max": 1500000,
-      "step": 10000
+      "step": 10000,
+      "label": "Value per graduate (INR)",
+      "unit": "INR",
+      "decimals": 0,
+      "rangeKey": "value_per_graduate_inr",
+      "group": "monetary_values",
+      "helpText": "Indicative monetary benefit attributed to one FETP graduate over the planning horizon."
     },
     "valuePerOutbreak": {
       "min": 10000000,
       "max": 80000000,
-      "step": 1000000
+      "step": 1000000,
+      "label": "Value per outbreak response (INR)",
+      "unit": "INR",
+      "decimals": 0,
+      "rangeKey": "value_per_outbreak_response_inr",
+      "group": "monetary_values",
+      "helpText": "Indicative monetary benefit attributed to a successfully managed outbreak response."
     },
     "planningHorizonYears": {
       "min": 1,
       "max": 10,
-      "step": 1
+      "step": 1,
+      "label": "Planning horizon (years)",
+      "unit": "years",
+      "decimals": 0,
+      "rangeKey": "planning_years",
+      "group": "time_currency",
+      "helpText": "Number of years over which costs and benefits are aggregated."
     },
     "inrPerUsd": {
       "min": 60,
       "max": 100,
-      "step": 1
+      "step": 1,
+      "label": "INR per USD (display)",
+      "unit": "INR/USD",
+      "decimals": 0,
+      "rangeKey": "inr_per_usd_display",
+      "group": "time_currency",
+      "helpText": "Exchange rate used for displaying values in USD where required."
     },
     "discountRateAnnual": {
       "min": 0.0,
       "max": 0.10,
-      "step": 0.005
+      "step": 0.005,
+      "label": "Annual discount rate",
+      "unit": "rate",
+      "decimals": 3,
+      "rangeKey": "discount_rate_annual",
+      "group": "time_currency",
+      "helpText": "Annual discount rate applied to future costs and benefits (e.g. 0.03 for 3%)."
     }
   },
+
   "scenarios": {
     "baseline": {
       "label": "Baseline (default)",
@@ -245,7 +309,10 @@
           "valuePerGraduateMultiplier": 1.0,
           "valuePerOutbreakMultiplier": 1.0
         }
-      }
+      },
+      "inheritsFromDefaults": true,
+      "overrideTimeHorizon": null,
+      "overrideDiscountRateAnnual": null
     },
     "conservative": {
       "label": "Conservative benefits",
@@ -263,7 +330,10 @@
           "valuePerGraduateMultiplier": 0.75,
           "valuePerOutbreakMultiplier": 0.75
         }
-      }
+      },
+      "inheritsFromDefaults": true,
+      "overrideTimeHorizon": null,
+      "overrideDiscountRateAnnual": null
     },
     "highImpact": {
       "label": "High impact benefits",
@@ -281,7 +351,91 @@
           "valuePerGraduateMultiplier": 1.25,
           "valuePerOutbreakMultiplier": 1.25
         }
+      },
+      "inheritsFromDefaults": true,
+      "overrideTimeHorizon": null,
+      "overrideDiscountRateAnnual": null
+    }
+  },
+
+  "field_mappings": {
+    "uiToConfig": {
+      "graduationRate": "tiers[*].gradRate",
+      "outbreaksPerCohortPerYear": "tiers[*].outbreaksPerCohortPerYear",
+      "valuePerGraduate": "tiers[*].valuePerGraduate",
+      "valuePerOutbreak": "tiers[*].valuePerOutbreak",
+      "planningHorizonYears": "time_horizon.planning_years",
+      "discountRateAnnual": "time_horizon.discount_rate_annual",
+      "inrPerUsd": "currency.inr_per_usd_display"
+    },
+    "tierAliases": {
+      "frontline": "frontline",
+      "intermediate": "intermediate",
+      "advanced": "advanced"
+    }
+  },
+
+  "ui_layout": {
+    "sections": [
+      {
+        "id": "epi_core",
+        "label": "Epidemiological core parameters",
+        "fields": [
+          "graduationRate",
+          "outbreaksPerCohortPerYear"
+        ]
+      },
+      {
+        "id": "monetary_values",
+        "label": "Monetary benefit assumptions",
+        "fields": [
+          "valuePerGraduate",
+          "valuePerOutbreak"
+        ]
+      },
+      {
+        "id": "time_currency",
+        "label": "Time horizon and currency",
+        "fields": [
+          "planningHorizonYears",
+          "discountRateAnnual",
+          "inrPerUsd"
+        ]
       }
+    ],
+    "scenarioSelector": {
+      "enabled": true,
+      "defaultScenarioKey": "baseline"
+    }
+  },
+
+  "schema": {
+    "planningHorizonYears": {
+      "type": "number",
+      "min": 1,
+      "max": 10,
+      "description": "Length of the planning horizon in years."
+    },
+    "discountRateAnnual": {
+      "type": "number",
+      "min": 0.0,
+      "max": 0.1,
+      "description": "Annual discount rate applied to future flows."
+    },
+    "inrPerUsd": {
+      "type": "number",
+      "min": 60,
+      "max": 100,
+      "description": "Exchange rate used for display conversions."
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "frontline",
+        "intermediate",
+        "advanced"
+      ],
+      "description": "FETP programme tier."
     }
   }
 }
