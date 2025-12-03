@@ -4,7 +4,7 @@
     "name": "STEPS FETP India epidemiological configuration",
     "version": "1.2",
     "description": "Default multipliers and indicative monetary values for graduates and outbreak responses used by the STEPS decision aid.",
-    "lastUpdated": "2025-12-02",
+    "lastUpdated": "2025-12-03",
     "author": "Mesfin Genie and collaborators",
     "notes": "Version 1.2 adds structured sections for time horizon, currency, tier-specific multipliers and values, defaults, and ranges while preserving backwards compatibility with Versions 1.0 and 1.1.",
     "backwardsCompatibleWith": [
