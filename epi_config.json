@@ -1,0 +1,287 @@
+{
+  "meta": {
+    "name": "STEPS FETP India epidemiological configuration",
+    "version": "1.2",
+    "description": "Default multipliers and indicative monetary values for graduates and outbreak responses used by the STEPS decision aid.",
+    "lastUpdated": "2025-12-02",
+    "author": "Mesfin Genie and collaborators",
+    "notes": "Version 1.2 adds structured sections for time horizon, currency, tier-specific multipliers and values, defaults, and ranges while preserving backwards compatibility with Versions 1.0 and 1.1."
+  },
+  "general": {
+    "planningHorizonYears": 5,
+    "inrPerUsd": 83,
+    "discountRateAnnual": 0.03,
+    "applyDiscountingToOutbreakBenefits": false
+  },
+  "time_horizon": {
+    "planning_years": 5,
+    "discount_rate_annual": 0.03,
+    "apply_discounting_to_outbreak_benefits": false
+  },
+  "currency": {
+    "base_currency": "INR",
+    "display_currency_options": [
+      "INR",
+      "USD"
+    ],
+    "inr_per_usd_display": 83
+  },
+  "tiers": {
+    "frontline": {
+      "label": "Frontline",
+      "durationMonths": 3,
+      "gradRate": 0.9,
+      "outbreaksPerCohortPerYear": 0.3,
+      "valuePerGraduate": 400000,
+      "valuePerOutbreak": 30000000,
+      "minGradRate": 0.6,
+      "maxGradRate": 1.0,
+      "minOutbreaksPerCohortPerYear": 0.0,
+      "maxOutbreaksPerCohortPerYear": 2.0,
+      "minValuePerGraduate": 200000,
+      "maxValuePerGraduate": 1000000,
+      "minValuePerOutbreak": 10000000,
+      "maxValuePerOutbreak": 60000000
+    },
+    "intermediate": {
+      "label": "Intermediate",
+      "durationMonths": 12,
+      "gradRate": 0.9,
+      "outbreaksPerCohortPerYear": 0.5,
+      "valuePerGraduate": 500000,
+      "valuePerOutbreak": 30000000,
+      "minGradRate": 0.6,
+      "maxGradRate": 1.0,
+      "minOutbreaksPerCohortPerYear": 0.0,
+      "maxOutbreaksPerCohortPerYear": 2.0,
+      "minValuePerGraduate": 250000,
+      "maxValuePerGraduate": 1200000,
+      "minValuePerOutbreak": 10000000,
+      "maxValuePerOutbreak": 60000000
+    },
+    "advanced": {
+      "label": "Advanced",
+      "durationMonths": 24,
+      "gradRate": 0.95,
+      "outbreaksPerCohortPerYear": 0.8,
+      "valuePerGraduate": 600000,
+      "valuePerOutbreak": 40000000,
+      "minGradRate": 0.7,
+      "maxGradRate": 1.0,
+      "minOutbreaksPerCohortPerYear": 0.0,
+      "maxOutbreaksPerCohortPerYear": 2.0,
+      "minValuePerGraduate": 300000,
+      "maxValuePerGraduate": 1500000,
+      "minValuePerOutbreak": 15000000,
+      "maxValuePerOutbreak": 80000000
+    }
+  },
+  "epi_multipliers": {
+    "frontline": {
+      "graduates_per_cohort_share": 0.9,
+      "outbreaks_per_cohort_per_year": 0.3,
+      "duration_months": 3
+    },
+    "intermediate": {
+      "graduates_per_cohort_share": 0.9,
+      "outbreaks_per_cohort_per_year": 0.5,
+      "duration_months": 12
+    },
+    "advanced": {
+      "graduates_per_cohort_share": 0.95,
+      "outbreaks_per_cohort_per_year": 0.8,
+      "duration_months": 24
+    }
+  },
+  "values": {
+    "frontline": {
+      "value_per_graduate_inr": 400000,
+      "value_per_outbreak_response_inr": 30000000
+    },
+    "intermediate": {
+      "value_per_graduate_inr": 500000,
+      "value_per_outbreak_response_inr": 30000000
+    },
+    "advanced": {
+      "value_per_graduate_inr": 600000,
+      "value_per_outbreak_response_inr": 40000000
+    }
+  },
+  "defaults": {
+    "default_tier": "frontline",
+    "default_model": "mxl",
+    "default_cost_template": "who_frontline_6_cohorts",
+    "default_benefit_definition": "dce_only_overall",
+    "default_benefit_definition_with_epi": "dce_plus_epi_overall",
+    "default_display_currency": "INR",
+    "default_apply_discounting_to_outbreak_benefits": false
+  },
+  "ranges": {
+    "graduates_per_cohort_share": {
+      "min": 0.5,
+      "max": 1.0
+    },
+    "outbreaks_per_cohort_per_year": {
+      "min": 0.0,
+      "max": 10.0
+    },
+    "value_per_graduate_inr": {
+      "min": 200000,
+      "max": 1500000
+    },
+    "value_per_outbreak_response_inr": {
+      "min": 10000000,
+      "max": 80000000
+    },
+    "planning_years": {
+      "min": 1,
+      "max": 10
+    },
+    "discount_rate_annual": {
+      "min": 0.0,
+      "max": 0.1
+    },
+    "inr_per_usd_display": {
+      "min": 60,
+      "max": 100
+    }
+  },
+  "cost_templates": {
+    "who_frontline_6_cohorts": {
+      "label": "WHO-style Frontline programme (6 cohorts over horizon)",
+      "default_tier": "frontline",
+      "default_number_of_cohorts": 6,
+      "notes": "Illustrative template for a multi-cohort frontline roll-out; cost details are defined in the costing configuration."
+    },
+    "who_intermediate_3_cohorts": {
+      "label": "WHO-style Intermediate programme (3 cohorts over horizon)",
+      "default_tier": "intermediate",
+      "default_number_of_cohorts": 3,
+      "notes": "Illustrative template for intermediate FETP roll-out."
+    },
+    "who_advanced_2_cohorts": {
+      "label": "WHO-style Advanced programme (2 cohorts over horizon)",
+      "default_tier": "advanced",
+      "default_number_of_cohorts": 2,
+      "notes": "Illustrative template for advanced FETP roll-out."
+    }
+  },
+  "advanced_defaults": {
+    "graduation_shares": {
+      "frontline": 0.9,
+      "intermediate": 0.9,
+      "advanced": 0.95
+    },
+    "outbreaks_per_cohort_per_year": {
+      "frontline": 0.3,
+      "intermediate": 0.5,
+      "advanced": 0.8
+    },
+    "value_per_graduate_inr": {
+      "frontline": 400000,
+      "intermediate": 500000,
+      "advanced": 600000
+    },
+    "value_per_outbreak_response_inr": {
+      "frontline": 30000000,
+      "intermediate": 30000000,
+      "advanced": 40000000
+    },
+    "planning_years": 5,
+    "discount_rate_annual": 0.03,
+    "inr_per_usd_display": 83
+  },
+  "ui": {
+    "graduationRate": {
+      "min": 0.6,
+      "max": 1.0,
+      "step": 0.01
+    },
+    "outbreaksPerCohortPerYear": {
+      "min": 0.0,
+      "max": 2.0,
+      "step": 0.05
+    },
+    "valuePerGraduate": {
+      "min": 200000,
+      "max": 1500000,
+      "step": 10000
+    },
+    "valuePerOutbreak": {
+      "min": 10000000,
+      "max": 80000000,
+      "step": 1000000
+    },
+    "planningHorizonYears": {
+      "min": 1,
+      "max": 10,
+      "step": 1
+    },
+    "inrPerUsd": {
+      "min": 60,
+      "max": 100,
+      "step": 1
+    },
+    "discountRateAnnual": {
+      "min": 0.0,
+      "max": 0.10,
+      "step": 0.005
+    }
+  },
+  "scenarios": {
+    "baseline": {
+      "label": "Baseline (default)",
+      "description": "Default configuration matching the values used in the STEPS technical appendix.",
+      "multipliers": {
+        "frontline": {
+          "valuePerGraduateMultiplier": 1.0,
+          "valuePerOutbreakMultiplier": 1.0
+        },
+        "intermediate": {
+          "valuePerGraduateMultiplier": 1.0,
+          "valuePerOutbreakMultiplier": 1.0
+        },
+        "advanced": {
+          "valuePerGraduateMultiplier": 1.0,
+          "valuePerOutbreakMultiplier": 1.0
+        }
+      }
+    },
+    "conservative": {
+      "label": "Conservative benefits",
+      "description": "Reduces monetary benefits by 25 percent for all tiers, holding graduation rates and outbreaks per cohort fixed.",
+      "multipliers": {
+        "frontline": {
+          "valuePerGraduateMultiplier": 0.75,
+          "valuePerOutbreakMultiplier": 0.75
+        },
+        "intermediate": {
+          "valuePerGraduateMultiplier": 0.75,
+          "valuePerOutbreakMultiplier": 0.75
+        },
+        "advanced": {
+          "valuePerGraduateMultiplier": 0.75,
+          "valuePerOutbreakMultiplier": 0.75
+        }
+      }
+    },
+    "highImpact": {
+      "label": "High impact benefits",
+      "description": "Increases monetary benefits by 25 percent for all tiers, holding graduation rates and outbreaks per cohort fixed.",
+      "multipliers": {
+        "frontline": {
+          "valuePerGraduateMultiplier": 1.25,
+          "valuePerOutbreakMultiplier": 1.25
+        },
+        "intermediate": {
+          "valuePerGraduateMultiplier": 1.25,
+          "valuePerOutbreakMultiplier": 1.25
+        },
+        "advanced": {
+          "valuePerGraduateMultiplier": 1.25,
+          "valuePerOutbreakMultiplier": 1.25
+        }
+      }
+    }
+  }
+}
