@@ -1,375 +1,785 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advanced FETP Decision Aid Tool</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <title>STEPS – FETP India Decision Aid</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- jsPDF -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <header class="text-center">
-      <h1>Advanced FETP Decision Aid Tool</h1>
-      <p class="lead">Explore different configurations for the Advanced Field Epidemiology Training Program (FETP) to predict programme uptake, evaluate cost–benefit tradeoffs, and inform policy design.</p>
-    </header>
-    <div class="instruction-banner card">
-      <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="Follow these steps to use the tool"></i>
-      <strong>How to Use:</strong> Configure settings in <em>Inputs</em>, adjust costs in <em>Costs & Benefits</em>, and click <em>Calculate & View Results</em> to see results in a pop-up. Save scenarios in <em>Scenarios</em> for comparison.
+<header class="app-header">
+    <div class="app-header-left">
+        <div class="app-logo-circle">S</div>
+        <div class="app-title-block">
+            <h1 class="app-title">STEPS – FETP India Decision Aid</h1>
+            <p class="app-subtitle">Scalable Training Estimation and Planning System for FETP India</p>
+        </div>
     </div>
-    <nav class="tabs" role="tablist">
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="introTab-tab" data-bs-toggle="tab" data-bs-target="#introTab" type="button" role="tab" aria-controls="introTab" aria-selected="true">
-            <i class="fa-solid fa-info-circle info-icon" data-bs-toggle="tooltip" title="Tool overview"></i> Introduction
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="attributesTab-tab" data-bs-toggle="tab" data-bs-target="#attributesTab" type="button" role="tab" aria-controls="attributesTab" aria-selected="false">
-            <i class="fa-solid fa-list info-icon" data-bs-toggle="tooltip" title="Policy attributes"></i> Attributes
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="inputsTab-tab" data-bs-toggle="tab" data-bs-target="#inputsTab" type="button" role="tab" aria-controls="inputsTab" aria-selected="false">
-            <i class="fa-solid fa-sliders info-icon" data-bs-toggle="tooltip" title="Configure policy"></i> Inputs
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="probTab-tab" data-bs-toggle="tab" data-bs-target="#probTab" type="button" role="tab" aria-controls="probTab" aria-selected="false">
-            <i class="fa-solid fa-chart-pie info-icon" data-bs-toggle="tooltip" title="Predicted acceptance"></i> Uptake
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="costsTab-tab" data-bs-toggle="tab" data-bs-target="#costsTab" type="button" role="tab" aria-controls="costsTab" aria-selected="false">
-            <i class="fa-solid fa-calculator info-icon" data-bs-toggle="tooltip" title="Cost-benefit analysis"></i> Costs & Benefits
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="scenariosTab-tab" data-bs-toggle="tab" data-bs-target="#scenariosTab" type="button" role="tab" aria-controls="scenariosTab" aria-selected="false">
-            <i class="fa-solid fa-folder-open info-icon" data-bs-toggle="tooltip" title="Saved scenarios"></i> Scenarios
-          </button>
-        </li>
-      </ul>
-    </nav>
-    <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="introTab" role="tabpanel" aria-labelledby="introTab-tab">
-        <div class="card">
-          <h2>Introduction <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="What this tool does"></i></h2>
-          <p>This interactive tool enables you to evaluate FETP program configurations by modeling public acceptance and cost-benefit outcomes. Using DCE survey data, it predicts program uptake and calculates economic impacts with realistic estimates, empowering informed decision-making.</p>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="attributesTab" role="tabpanel" aria-labelledby="attributesTab-tab">
-        <h2>Key Program Attributes <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="What each setting means"></i></h2>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card attribute-card">
-              <div class="attribute-icon"><i class="fa-solid fa-chalkboard"></i></div>
-              <div class="attribute-content">
-                <h4>Training Delivery Method</h4>
-                <p><strong>Default:</strong> Hybrid</p>
-                <p><strong>Alternatives:</strong> In-Person, Fully Online</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card attribute-card">
-              <div class="attribute-icon"><i class="fa-solid fa-user-clock"></i></div>
-              <div class="attribute-content">
-                <h4>Training Model</h4>
-                <p><strong>Default:</strong> Part-Time</p>
-                <p><strong>Alternative:</strong> Full-Time (Scholarship)</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card attribute-card">
-              <div class="attribute-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-              <div class="attribute-content">
-                <h4>Type of Training</h4>
-                <p><strong>Default:</strong> Advanced</p>
-                <p><strong>Alternatives:</strong> Frontline, Intermediate</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card attribute-card">
-              <div class="attribute-icon"><i class="fa-solid fa-people-group"></i></div>
-              <div class="attribute-content">
-                <h4>Annual Training Capacity</h4>
-                <p><strong>Default:</strong> 100 trainees</p>
-                <p><strong>Alternatives:</strong> 500, 1000, 2000+ trainees</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card attribute-card">
-              <div class="attribute-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-              <div class="attribute-content">
-                <h4>Stipend Support</h4>
-                <p><strong>Default:</strong> ₹75,000</p>
-                <p><strong>Alternatives:</strong> ₹100,000, ₹150,000</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card attribute-card">
-              <div class="attribute-icon"><i class="fa-solid fa-briefcase"></i></div>
-              <div class="attribute-content">
-                <h4>Career Pathways</h4>
-                <p><strong>Default:</strong> Government roles</p>
-                <p><strong>Alternatives:</strong> International, Academic & Research, Private/NGOs</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card attribute-card">
-              <div class="attribute-icon"><i class="fa-solid fa-map"></i></div>
-              <div class="attribute-content">
-                <h4>Geographic Distribution</h4>
-                <p><strong>Default:</strong> Regional</p>
-                <p><strong>Alternatives:</strong> Centralized, Nationwide</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card attribute-card">
-              <div class="attribute-icon"><i class="fa-solid fa-certificate"></i></div>
-              <div class="attribute-content">
-                <h4>Accreditation & Quality</h4>
-                <p><strong>Default:</strong> National</p>
-                <p><strong>Alternatives:</strong> Unaccredited, International</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card attribute-card">
-              <div class="attribute-icon"><i class="fa-solid fa-calculator"></i></div>
-              <div class="attribute-content">
-                <h4>Total Cost</h4>
-                <p><strong>Default:</strong> Medium (₹55,000/month)</p>
-                <p><strong>Alternatives:</strong> Low (₹27,000/month), High (₹83,000/month)</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="inputsTab" role="tabpanel" aria-labelledby="inputsTab-tab">
-        <div class="card">
-          <h2>Configure Program <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="Choose program settings"></i></h2>
-          <form>
-            <div class="input-cards row">
-              <div class="col-md-4 input-level-card">
-                <h3>Training Delivery Method</h3>
-                <p>(Default: Hybrid)</p>
-                <select name="deliveryMethod" class="form-control">
-                  <option value="inperson">In-Person</option>
-                  <option value="hybrid" selected>Hybrid</option>
-                  <option value="online">Fully Online</option>
-                </select>
-              </div>
-              <div class="col-md-4 input-level-card">
-                <h3>Training Model</h3>
-                <p>(Default: Part-Time)</p>
-                <select name="trainingModel" class="form-control">
-                  <option value="parttime" selected>Part-Time Model</option>
-                  <option value="fulltime">Full-Time Model (Scholarship)</option>
-                </select>
-              </div>
-              <div class="col-md-4 input-level-card">
-                <h3>Type of Training</h3>
-                <p>(Default: Advanced)</p>
-                <select name="trainingType" class="form-control">
-                  <option value="frontline">Frontline</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="advanced" selected>Advanced</option>
-                </select>
-              </div>
-              <div class="col-md-4 input-level-card">
-                <h3>Annual Training Capacity</h3>
-                <p>(Default: 100 trainees)</p>
-                <select name="annualCapacity" class="form-control">
-                  <option value="100" selected>100 trainees</option>
-                  <option value="500">500 trainees</option>
-                  <option value="1000">1000 trainees</option>
-                  <option value="2000">2000+ trainees</option>
-                </select>
-              </div>
-              <div class="col-md-4 input-level-card">
-                <h3>Stipend Support</h3>
-                <p>(Default: ₹75,000)</p>
-                <select name="stipendSupport" class="form-control">
-                  <option value="75000" selected>₹75,000</option>
-                  <option value="100000">₹100,000</option>
-                  <option value="150000">₹150,000</option>
-                </select>
-              </div>
-              <div class="col-md-4 input-level-card">
-                <h3>Career Pathways</h3>
-                <p>(Default: Government roles)</p>
-                <select name="careerPathway" class="form-control">
-                  <option value="government" selected>Government roles</option>
-                  <option value="international">International</option>
-                  <option value="academic">Academic & Research</option>
-                  <option value="private">Private/NGOs</option>
-                </select>
-              </div>
-              <div class="col-md-4 input-level-card">
-                <h3>Geographic Distribution</h3>
-                <p>(Default: Regional)</p>
-                <select name="geographicDistribution" class="form-control">
-                  <option value="centralized">Centralized Distribution</option>
-                  <option value="regional" selected>Regional Distribution</option>
-                  <option value="nationwide">Nationwide Distribution</option>
-                </select>
-              </div>
-              <div class="col-md-4 input-level-card">
-                <h3>Accreditation & Quality</h3>
-                <p>(Default: National)</p>
-                <select name="accreditation" class="form-control">
-                  <option value="unaccredited">Unaccredited</option>
-                  <option value="national" selected>National</option>
-                  <option value="international">International</option>
-                </select>
-              </div>
-              <div class="col-md-4 input-level-card">
-                <h3>Total Cost</h3>
-                <p>(Default: Medium - ₹55,000/month)</p>
-                <select name="totalCost" class="form-control">
-                  <option value="low">Low (₹27,000/month)</option>
-                  <option value="medium" selected>Medium (₹55,000/month)</option>
-                  <option value="high">High (₹83,000/month)</option>
-                </select>
-              </div>
-            </div>
-            <div class="buttons-row mt-3">
-              <button type="button" class="btn btn-secondary" onclick="resetInputs()">Reset</button>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#resultModal" onclick="calculateScenario()">Calculate & View Results</button>
-            </div>
-          </form>
-          <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="resultModalLabel">Scenario Results</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <div id="modalResults"></div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="probTab" role="tabpanel" aria-labelledby="probTab-tab">
-        <div class="card">
-          <h4>Predicted Uptake <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="Percentage of people likely to accept the program"></i></h4>
-          <p>Estimates the percentage of people who would accept the program based on your policy settings. Calculate a scenario to see results.</p>
-          <div class="progress mt-3">
-            <div id="uptakeBar" class="progress-bar bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-          </div>
-          <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#uptakeModal" onclick="showUptakeRecommendations()">Recommendation</button>
-        </div>
-        <div class="modal fade" id="uptakeModal" tabindex="-1" aria-labelledby="uptakeModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="uptakeModalLabel">Uptake Recommendations</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div id="uptakeResults"></div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="costsTab" role="tabpanel" aria-labelledby="costsTab-tab">
-        <div class="card">
-          <h4>Cost–Benefit Analysis <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="Detailed breakdown of costs and benefits"></i></h4>
-          <p>Compares the costs of implementing the program to health benefits, measured in Quality-Adjusted Life Years (QALYs). Calculate a scenario to see results.</p>
-          <div class="row">
-            <div class="col-md-6">
-              <h5>Cost Parameters (Optional: adjust for custom analysis)</h5>
-              <div class="form-group mb-3">
-                <label for="fixed_vaccineProcurement">Vaccine Procurement (fixed)</label>
-                <input type="number" id="fixed_vaccineProcurement" class="form-control" value="80000">
-              </div>
-              <div class="form-group mb-3">
-                <label for="fixed_administration">Administration & Staffing</label>
-                <input type="number" id="fixed_administration" class="form-control" value="30000">
-              </div>
-              <div class="form-group mb-3">
-                <label for="fixed_legal">Legal & Compliance</label>
-                <input type="number" id="fixed_legal" class="form-control" value="10000">
-              </div>
-              <div class="form-group mb-3">
-                <label for="fixed_communication">Communication & Outreach</label>
-                <input type="number" id="fixed_communication" class="form-control" value="15000">
-              </div>
-              <div class="form-group mb-3">
-                <label for="fixed_monitoring">Monitoring & Data Systems</label>
-                <input type="number" id="fixed_monitoring" class="form-control" value="20000">
-              </div>
-              <div class="form-group mb-3">
-                <label for="variablePerPerson">Variable Cost per Person</label>
-                <input type="number" id="variablePerPerson" class="form-control" value="40">
-              </div>
-            </div>
-            <div class="col-md-6">
-              <h5>Benefit Scenario (Value per QALY)</h5>
-              <select id="benefitScenario" class="form-control mb-3">
-                <option value="low">Low (A$40k / €35k)</option>
-                <option value="medium" selected>Medium (A$50k / €45k)</option>
-                <option value="high">High (A$60k / €55k)</option>
-              </select>
-              <h5>Cost of Living Adjustment</h5>
-              <select id="adjustCOL" class="form-control mb-3">
-                <option value="yes">Yes</option>
-                <option value="no" selected>No</option>
-              </select>
-            </div>
-          </div>
-          <div id="costsBenefitsResults"></div>
-          <canvas id="costBenefitChart" class="chart-box"></canvas>
-          <canvas id="netBenefitChart" class="chart-box"></canvas>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="scenariosTab" role="tabpanel" aria-labelledby="scenariosTab-tab">
-        <div class="card">
-          <h4>Saved Scenarios <i class="fa-solid fa-circle-info info-icon" data-bs-toggle="tooltip" title="Review and export saved configurations"></i></h4>
-          <p>Save and compare program scenarios to analyze their impacts.</p>
-          <button onclick="saveScenario()" class="btn btn-primary me-2">Save Scenario</button>
-          <button onclick="openComparison()" class="btn btn-secondary me-2">Compare & Export PDF</button>
-          <button onclick="downloadCSV()" class="btn btn-secondary">Download CSV</button>
-          <div class="table-responsive mt-3">
-            <table id="scenarioTable" class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Name</th><th>Delivery</th><th>Model</th><th>Type</th><th>Capacity</th><th>Stipend</th><th>Career</th><th>Geographic</th><th>Accreditation</th><th>Total Cost</th><th>Uptake%</th><th>Net Benefit</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+
+    <div class="app-header-center">
+        <div class="app-header-line">Linking DCE preferences, cohort costs and outbreak benefits.</div>
+        <div class="app-header-line">Designed for workshops with Government of India, WHO, World Bank and partners.</div>
     </div>
-    <footer class="text-center mt-4">
-      <p>© 2025 Advanced FETP Decision Aid Tool</p>
-    </footer>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script.js"></script>
+
+    <div class="app-header-right">
+        <span class="badge badge-soft">Version 1 draft</span>
+        <button id="btn-start-tour" class="btn-ghost-small">
+            <span class="tour-icon">?</span>
+            <span>Quick tour</span>
+        </button>
+    </div>
+</header>
+
+<main class="app-shell">
+    <div class="card card-secondary">
+        <h2>STEPS overview</h2>
+        <p>
+            STEPS helps you stress test FETP scale up options by combining discrete choice experiment (DCE) preferences
+            with simple cost and epidemiological calculations. Use the tabs below to configure a programme, review
+            predicted endorsement and value for money, compare scenarios, and access a plain language technical appendix.
+        </p>
+    </div>
+
+    <div class="card">
+        <nav class="tab-bar" aria-label="Main tabs">
+            <button class="tab-link active" data-tab="intro" type="button">Introduction</button>
+            <button class="tab-link" data-tab="config" type="button">Configuration</button>
+            <button class="tab-link" data-tab="results" type="button">Results</button>
+            <button class="tab-link" data-tab="costing" type="button">Costing</button>
+            <button class="tab-link" data-tab="natsim" type="button">National simulation</button>
+            <button class="tab-link" data-tab="sensitivity" type="button">DCE sensitivity &amp; CBA</button>
+            <button class="tab-link" data-tab="technical" type="button">Technical settings</button>
+        </nav>
+
+        <!-- Intro tab -->
+        <section id="tab-intro" class="tab-panel active">
+            <div class="app-main-layout">
+                <div class="app-main-column">
+                    <div class="card">
+                        <h2>What this tool is for</h2>
+                        <p>
+                            STEPS is a decision aid for discussions about strengthening and scaling FETP programmes in India.
+                            It is intended for exploratory use during workshops and business case preparation. The numbers are
+                            indicative and should be refined using programme budgets and updated epidemiological evidence.
+                        </p>
+                        <p>
+                            The engine combines:
+                        </p>
+                        <ul class="plain-list">
+                            <li>DCE-based endorsement of alternative FETP designs.</li>
+                            <li>Programme costs per trainee per month, scaled up by cohort size and duration.</li>
+                            <li>Simple epidemiological multipliers for graduates and outbreak responses.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="app-main-column">
+                    <div class="card">
+                        <h3>How to use STEPS in a meeting</h3>
+                        <ol class="plain-list numbered">
+                            <li>Go to the <strong>Configuration</strong> tab and choose tier, incentives, delivery and cohort assumptions.</li>
+                            <li>Click <strong>Apply configuration</strong> to update endorsement, costs and benefits.</li>
+                            <li>Use the <strong>Results</strong> and <strong>Costing</strong> tabs to explain the option.</li>
+                            <li>Save interesting options into the <strong>scenario portfolio</strong> on the National simulation tab.</li>
+                            <li>Use the <strong>DCE sensitivity &amp; CBA</strong> tab to check how results move under different assumptions.</li>
+                        </ol>
+                        <p class="note">
+                            The tool is a draft and should be read together with the Technical Appendix and the accompanying
+                            narrative in the project report.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Configuration tab -->
+        <section id="tab-config" class="tab-panel">
+            <div class="app-main-layout">
+                <div class="app-main-column">
+                    <div class="card">
+                        <div class="card-title-row">
+                            <div>
+                                <h2>Configure an FETP option</h2>
+                                <p class="card-subtitle">
+                                    Choose tier, incentives, delivery, response time and cohort scale for this scenario.
+                                </p>
+                            </div>
+                            <div class="flex-row">
+                                <span class="metric-label">Preference model</span>
+                                <div class="pill-toggle-group">
+                                    <button type="button"
+                                            class="pill-toggle active"
+                                            data-model="mxl">
+                                        Average mixed logit
+                                    </button>
+                                    <button type="button"
+                                            class="pill-toggle"
+                                            data-model="lc2">
+                                        Supportive group
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form class="form-grid" onsubmit="return false;">
+                            <div class="form-group">
+                                <label for="program-tier">Programme tier</label>
+                                <select id="program-tier">
+                                    <option value="frontline">Frontline (3 months)</option>
+                                    <option value="intermediate">Intermediate (12 months)</option>
+                                    <option value="advanced">Advanced (24 months)</option>
+                                </select>
+                                <p class="hint">Choose the main FETP tier for this configuration.</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="career-track">Career incentive</label>
+                                <select id="career-track">
+                                    <option value="certificate">Government and partner certificate</option>
+                                    <option value="uniqual">University qualification</option>
+                                    <option value="career_path">Government career pathway</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mentorship">
+                                    Mentorship intensity
+                                </label>
+                                <select id="mentorship">
+                                    <option value="low">Low mentorship</option>
+                                    <option value="medium">Medium mentorship</option>
+                                    <option value="high">High mentorship</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="delivery">Delivery mode</label>
+                                <select id="delivery">
+                                    <option value="blended">Blended delivery</option>
+                                    <option value="inperson">Fully in person delivery</option>
+                                    <option value="online">Fully online delivery</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="response">Outbreak response time</label>
+                                <select id="response">
+                                    <option value="30">Detect and respond within 30 days</option>
+                                    <option value="15">Detect and respond within 15 days</option>
+                                    <option value="7">Detect and respond within 7 days</option>
+                                </select>
+                                <p class="hint">Used as a multiplier on outbreak-related benefits.</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="trainees">Trainees per cohort</label>
+                                <input id="trainees" type="number" min="1" step="1" value="25">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cohorts">Number of cohorts</label>
+                                <input id="cohorts" type="number" min="1" step="1" value="6">
+                            </div>
+
+                            <div class="form-group form-group-wide">
+                                <label for="cost-slider">
+                                    Cost per trainee per month
+                                </label>
+                                <input id="cost-slider" type="range" min="5000" max="60000" step="1000" value="20000">
+                                <div class="slider-value">
+                                    <span class="metric-label">Indicative programme cost per trainee per month</span>
+                                    <span id="cost-display" class="metric-value">INR 20,000</span>
+                                </div>
+                                <p class="hint">
+                                    Use this to align the modelled cost with your draft budget. Cost templates in the
+                                    Costing tab provide a breakdown.
+                                </p>
+                            </div>
+
+                            <div class="form-group form-group-wide">
+                                <label>
+                                    Opportunity cost of trainee time
+                                </label>
+                                <button type="button" id="opp-toggle" class="switch-pill on">
+                                    <div class="switch-knob"></div>
+                                    <span class="switch-label">Opportunity cost included</span>
+                                </button>
+                                <p class="hint">
+                                    When included, the tool adds an opportunity cost percentage on top of direct
+                                    programme costs using the selected template.
+                                </p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="scenario-name">Scenario label (optional)</label>
+                                <input id="scenario-name"
+                                       type="text"
+                                       placeholder="e.g. Advanced, high mentorship, 6 cohorts">
+                            </div>
+
+                            <div class="form-group form-group-wide">
+                                <label for="scenario-notes">Short notes (optional)</label>
+                                <textarea id="scenario-notes" rows="2"
+                                          placeholder="Add a reminder about key assumptions or intended use."></textarea>
+                            </div>
+                        </form>
+
+                        <div class="button-row button-row-main">
+                            <button id="update-results" class="btn-primary" type="button">
+                                Apply configuration
+                            </button>
+                            <button id="open-snapshot" class="btn-secondary" type="button">
+                                Open snapshot
+                            </button>
+                            <button id="save-scenario" class="btn-ghost" type="button">
+                                Save to portfolio
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-main-column">
+                    <div class="card config-summary-card">
+                        <div class="config-summary-header">
+                            <div>
+                                <h2>Summary and recommendation</h2>
+                                <p class="card-subtitle">
+                                    Interprets DCE endorsement, costs and benefits for this configuration.
+                                </p>
+                            </div>
+                            <div class="metric-block">
+                                <div class="metric-label">Predicted endorsement</div>
+                                <div id="config-endorsement-value" class="metric-value">–</div>
+                            </div>
+                        </div>
+
+                        <div class="flex-between" style="margin-bottom:8px;">
+                            <div class="headline-status">
+                                <span id="headline-status-pill"
+                                      class="status-pill status-neutral">
+                                    Scenario not yet classified
+                                </span>
+                            </div>
+                            <div class="flex-row">
+                                <span class="metric-label">Display currency</span>
+                                <div class="pill-toggle-group">
+                                    <button type="button"
+                                            class="pill-toggle active"
+                                            data-currency="INR">
+                                        INR
+                                    </button>
+                                    <button type="button"
+                                            class="pill-toggle"
+                                            data-currency="USD">
+                                        USD
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="headline-recommendation" class="headline-text">
+                            Apply a configuration to see an interpreted recommendation based on endorsement and benefit
+                            cost ratio.
+                        </div>
+
+                        <div class="headline-briefing">
+                            <h4>Briefing note</h4>
+                            <p id="headline-briefing-text" class="text-muted">
+                                Once you apply a configuration, this section summarises endorsement, costs, indicative
+                                benefits and epidemiological outputs in plain language for use in concept notes and
+                                business case documents.
+                            </p>
+                        </div>
+
+                        <hr class="divider">
+
+                        <div id="config-summary" class="config-summary"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results tab -->
+        <section id="tab-results" class="tab-panel">
+            <div class="app-main-layout">
+                <div class="app-main-column">
+                    <div class="card">
+                        <h2>Endorsement and opt out</h2>
+                        <p class="card-subtitle">
+                            Shares of stakeholders predicted to endorse the FETP option versus opting out.
+                        </p>
+                        <div class="kpi-grid">
+                            <div class="kpi-card">
+                                <div class="kpi-label">Endorse FETP option</div>
+                                <div id="endorsement-rate" class="kpi-value">–</div>
+                                <div class="kpi-small-note">Derived from the selected DCE model.</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Choose opt out</div>
+                                <div id="optout-rate" class="kpi-value">–</div>
+                                <div class="kpi-small-note">Stakeholders preferring no investment under this design.</div>
+                            </div>
+                        </div>
+                        <div class="chart-block">
+                            <canvas id="chart-uptake" aria-label="Endorsement and opt out chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Epidemiological outputs</h3>
+                        <p class="card-subtitle">
+                            Graduates and outbreak responses implied by the current configuration and planning horizon.
+                        </p>
+                        <div class="kpi-grid">
+                            <div class="kpi-card">
+                                <div class="kpi-label">Total FETP graduates</div>
+                                <div id="epi-graduates" class="kpi-value">–</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Outbreak responses per year</div>
+                                <div id="epi-outbreaks" class="kpi-value">–</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Indicative benefit per cohort</div>
+                                <div id="epi-benefit" class="kpi-value">–</div>
+                            </div>
+                        </div>
+                        <div class="chart-block">
+                            <canvas id="chart-epi" aria-label="Epidemiological outputs chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-main-column">
+                    <div class="card">
+                        <h2>Economic value per cohort</h2>
+                        <p class="card-subtitle">
+                            Economic costs and indicative benefits per cohort for the current configuration.
+                        </p>
+                        <div class="kpi-grid">
+                            <div class="kpi-card">
+                                <div class="kpi-label">Economic cost per cohort</div>
+                                <div id="total-cost" class="kpi-value">–</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Net benefit per cohort</div>
+                                <div id="net-benefit" class="kpi-value">–</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Benefit cost ratio</div>
+                                <div id="bcr" class="kpi-value">–</div>
+                            </div>
+                        </div>
+
+                        <div class="metric-single">
+                            <div class="metric-label">Willingness to pay (per trainee per month)</div>
+                            <div id="wtp-config" class="metric-value">–</div>
+                            <p class="metric-caption">
+                                Model-based willingness to pay for moving from the baseline configuration to this design.
+                            </p>
+                        </div>
+
+                        <div class="chart-block">
+                            <canvas id="chart-bcr" aria-label="Cost and benefit per cohort chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Costing tab -->
+        <section id="tab-costing" class="tab-panel">
+            <div class="app-main-layout">
+                <div class="app-main-column">
+                    <div class="card">
+                        <h2>Cost template and settings</h2>
+                        <p class="card-subtitle">
+                            Choose a costing template for this tier. Templates reflect different budgeting sources.
+                        </p>
+                        <div class="form-grid">
+                            <div class="form-group form-group-wide">
+                                <label for="cost-source">
+                                    Cost template
+                                    <button class="info-icon"
+                                            type="button"
+                                            title="Templates provide indicative shares for staff, travel, materials, supervision and overheads.">
+                                        i
+                                    </button>
+                                </label>
+                                <select id="cost-source">
+                                    <option>Loading templates…</option>
+                                </select>
+                                <p id="cost-template-description" class="hint"></p>
+                            </div>
+                        </div>
+                        <p class="note">
+                            You can override these assumptions by editing <code>cost_config.json</code> in the same
+                            folder as this tool. When present, that file takes precedence over the built-in templates.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="app-main-column">
+                    <div class="card">
+                        <h2>Cost breakdown per cohort</h2>
+                        <div id="cost-breakdown-summary" class="cost-summary"></div>
+
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                <tr>
+                                    <th>Cost component</th>
+                                    <th>Share of direct cost</th>
+                                    <th>Amount per cohort</th>
+                                    <th>Amount per trainee per month</th>
+                                    <th>Notes</th>
+                                </tr>
+                                </thead>
+                                <tbody id="cost-components-list"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- National simulation tab -->
+        <section id="tab-natsim" class="tab-panel">
+            <div class="card">
+                <div class="card-title-row">
+                    <div>
+                        <h2>National simulation and scenario portfolio</h2>
+                        <p class="card-subtitle">
+                            Scale results across cohorts and compare multiple saved scenarios side by side.
+                        </p>
+                    </div>
+                    <div class="export-toolbar">
+                        <button id="export-excel" class="btn-secondary" type="button">
+                            Export scenarios to Excel
+                        </button>
+                        <button id="export-pdf" class="btn-ghost" type="button">
+                            Export current policy brief (PDF)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Total economic cost (all cohorts)</div>
+                        <div id="nat-total-cost" class="kpi-value">–</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Total indicative benefit (all cohorts)</div>
+                        <div id="nat-total-benefit" class="kpi-value">–</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Net benefit (all cohorts)</div>
+                        <div id="nat-net-benefit" class="kpi-value">–</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Benefit cost ratio</div>
+                        <div id="nat-bcr" class="kpi-value">–</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Total graduates</div>
+                        <div id="nat-graduates" class="kpi-value">–</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Outbreak responses per year</div>
+                        <div id="nat-outbreaks" class="kpi-value">–</div>
+                    </div>
+                </div>
+
+                <div class="grid-two-stretch" style="margin-top:12px;">
+                    <div class="natsim-column">
+                        <h3>Costs and benefits across scenarios</h3>
+                        <div class="chart-block">
+                            <canvas id="chart-nat-cost-benefit"
+                                    aria-label="Costs and benefits across scenarios"></canvas>
+                        </div>
+                        <div class="chart-block">
+                            <canvas id="chart-nat-bcr"
+                                    aria-label="Benefit cost ratios across scenarios"></canvas>
+                        </div>
+                    </div>
+                    <div class="natsim-column">
+                        <h3>Graduates and outbreak responses</h3>
+                        <div class="chart-block">
+                            <canvas id="chart-nat-grad-outbreak"
+                                    aria-label="Graduates and outbreak responses across scenarios"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <h3>Saved scenario portfolio</h3>
+                <p class="text-muted">
+                    Use <strong>Save to portfolio</strong> on the Configuration tab to add or update rows in this table.
+                </p>
+                <div class="table-wrapper">
+                    <table id="scenario-table" class="data-table">
+                        <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Programme tier</th>
+                            <th>Mentorship</th>
+                            <th>Response time</th>
+                            <th>Number of cohorts</th>
+                            <th>Trainees per cohort</th>
+                            <th>Cost per trainee per month</th>
+                            <th>Preference model</th>
+                            <th>Endorsement</th>
+                            <th>BCR</th>
+                            <th>Net benefit (all cohorts)</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- DCE sensitivity & CBA tab -->
+        <section id="tab-sensitivity" class="tab-panel">
+            <div class="app-main-layout">
+                <div class="app-main-column">
+                    <div class="card">
+                        <h2>DCE benefits and sensitivity analysis</h2>
+                        <p class="card-subtitle">
+                            Adjust endorsement and benefit multipliers to see how DCE-based benefit cost ratios respond.
+                        </p>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="sens-endorsement-rate">
+                                    Endorsement rate override
+                                    <button class="info-icon" type="button"
+                                            title="Enter a value like 70 for 70 percent or 0.7 for 70 percent. Leave blank to use the model-based endorsement.">
+                                        i
+                                    </button>
+                                </label>
+                                <input id="sens-endorsement-rate"
+                                       type="number"
+                                       min="0"
+                                       step="0.1"
+                                       placeholder="Use model baseline">
+                                <p class="hint">Optional; applies to DCE sensitivity only.</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sens-dce-benefit-scale">
+                                    DCE benefit scale (%)
+                                </label>
+                                <input id="sens-dce-benefit-scale"
+                                       type="number"
+                                       min="10"
+                                       max="300"
+                                       step="5"
+                                       value="100">
+                                <p class="hint">100 keeps DCE benefits as estimated; 80 reduces them by 20 percent.</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sens-epi-benefit-scale">
+                                    Outbreak benefit scale (%)
+                                </label>
+                                <input id="sens-epi-benefit-scale"
+                                       type="number"
+                                       min="0"
+                                       max="300"
+                                       step="5"
+                                       value="100">
+                                <p class="hint">Scales outbreak-related benefits used in the combined BCR.</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    Include outbreak benefits in combined BCR
+                                </label>
+                                <div class="flex-row">
+                                    <input id="dce-epi-benefit-toggle"
+                                           type="checkbox"
+                                           checked
+                                           style="width:auto; margin-right:4px;">
+                                    <span class="hint">Untick to show DCE benefit only.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="headline-briefing" style="margin-top:12px;">
+                            <h4>Share of benefit from outbreak response</h4>
+                            <p id="dce-response-share-label" class="text-muted">
+                                Once a configuration is applied, this line will show how much of the overall DCE-based
+                                benefit is driven by faster outbreak response capacity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-main-column">
+                    <div class="card">
+                        <h3>DCE CBA profiles</h3>
+                        <p class="card-subtitle">
+                            Results are reported separately for the overall mixed logit and the supportive latent class.
+                        </p>
+                        <div class="table-wrapper">
+                            <table id="dce-sensitivity-table" class="data-table">
+                                <thead>
+                                <tr>
+                                    <th>Model / group</th>
+                                    <th>Total cost (all cohorts)</th>
+                                    <th>DCE benefit (all cohorts)</th>
+                                    <th>Outbreak-response component</th>
+                                    <th>Outbreak benefits (all cohorts)</th>
+                                    <th>BCR (DCE only)</th>
+                                    <th>NPV (DCE only)</th>
+                                    <th>BCR (DCE + outbreak)</th>
+                                    <th>NPV (DCE + outbreak)</th>
+                                    <th>BCR (endorsers only)</th>
+                                    <th>NPV (endorsers only)</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
+                        <div id="dce-sensitivity-summary" class="kpi-grid" style="margin-top:10px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical tab -->
+        <section id="tab-technical" class="tab-panel">
+            <div class="grid-two-stretch">
+                <div class="card">
+                    <h2>Advanced epidemiological settings</h2>
+                    <p class="card-subtitle">
+                        Adjust default multipliers when working with subject matter experts. Values apply across all
+                        configurations.
+                    </p>
+
+                    <div class="form-grid">
+                        <div class="form-group form-group-wide">
+                            <label for="adv-inr-per-usd">Exchange rate (INR per USD)</label>
+                            <input id="adv-inr-per-usd" type="number" step="0.1" min="1">
+                        </div>
+
+                        <div class="form-group form-group-wide">
+                            <h3>Frontline tier</h3>
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-frontline-grads">Graduates per trainee (share)</label>
+                            <input id="adv-frontline-grads" type="number" step="0.01" min="0" max="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-frontline-outbreaks">Outbreak responses per cohort per year</label>
+                            <input id="adv-frontline-outbreaks" type="number" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-frontline-vgrad">Value per graduate (INR)</label>
+                            <input id="adv-frontline-vgrad" type="number" step="10000" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-frontline-voutbreak">Value per outbreak response (INR)</label>
+                            <input id="adv-frontline-voutbreak" type="number" step="100000" min="0">
+                        </div>
+
+                        <div class="form-group form-group-wide">
+                            <h3>Intermediate tier</h3>
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-intermediate-grads">Graduates per trainee (share)</label>
+                            <input id="adv-intermediate-grads" type="number" step="0.01" min="0" max="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-intermediate-outbreaks">Outbreak responses per cohort per year</label>
+                            <input id="adv-intermediate-outbreaks" type="number" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-intermediate-vgrad">Value per graduate (INR)</label>
+                            <input id="adv-intermediate-vgrad" type="number" step="10000" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-intermediate-voutbreak">Value per outbreak response (INR)</label>
+                            <input id="adv-intermediate-voutbreak" type="number" step="100000" min="0">
+                        </div>
+
+                        <div class="form-group form-group-wide">
+                            <h3>Advanced tier</h3>
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-advanced-grads">Graduates per trainee (share)</label>
+                            <input id="adv-advanced-grads" type="number" step="0.01" min="0" max="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-advanced-outbreaks">Outbreak responses per cohort per year</label>
+                            <input id="adv-advanced-outbreaks" type="number" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-advanced-vgrad">Value per graduate (INR)</label>
+                            <input id="adv-advanced-vgrad" type="number" step="10000" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="adv-advanced-voutbreak">Value per outbreak response (INR)</label>
+                            <input id="adv-advanced-voutbreak" type="number" step="100000" min="0">
+                        </div>
+                    </div>
+
+                    <div class="button-row button-row-main">
+                        <button id="advanced-apply" class="btn-primary-small" type="button">
+                            Apply settings
+                        </button>
+                        <button id="advanced-reset" class="btn-ghost-small" type="button">
+                            Reset to defaults
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Assumption log and technical appendix</h2>
+                    <p class="card-subtitle">
+                        These elements provide transparency when sharing results with colleagues.
+                    </p>
+
+                    <div class="assumption-log">
+                        <label>Current assumption log</label>
+                        <pre id="assumption-log-text" class="assumption-log-text"></pre>
+                    </div>
+
+                    <div style="margin-top:14px;">
+                        <h3>Technical appendix</h3>
+                        <div id="technical-preview" class="technical-preview"></div>
+                        <div class="button-row button-row-main">
+                            <button id="open-technical-window" class="btn-secondary" type="button">
+                                Open technical appendix in new window
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<!-- Snapshot modal -->
+<div id="results-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+        <button id="close-modal" class="modal-close" type="button" aria-label="Close snapshot">×</button>
+        <div id="modal-body"></div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
 </body>
 </html>
